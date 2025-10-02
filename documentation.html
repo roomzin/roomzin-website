@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Roomzin</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Roomzin</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="performance.html" class="nav-link">Performance</a>
+                <a href="technology.html" class="nav-link">Technology</a>
+                <a href="investors.html" class="nav-link">Investors</a>
+                <a href="documentation.html" class="nav-link active">Documentation</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1>Documentation & Integration</h1>
+            <p>Get started with Roomzin in hours, not weeks</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="doc-overview">
+                <h2>Getting Started</h2>
+                <p>Roomzin is designed for seamless integration with your existing booking platform infrastructure. Our
+                    smart SDKs handle the complexity so you can focus on your business logic.</p>
+            </div>
+
+            <div class="sdk-section">
+                <h2>Available SDKs</h2>
+                <div class="sdk-grid">
+                    <div class="sdk-card">
+                        <h3>Java SDK</h3>
+                        <p>Enterprise-ready Java client with automatic cluster discovery</p>
+                        <code>implementation 'com.roomzin:client:1.0.0'</code>
+                    </div>
+                    <div class="sdk-card">
+                        <h3>Go SDK</h3>
+                        <p>High-performance Go client for microservices architecture</p>
+                        <code>go get github.com/roomzin/go-client</code>
+                    </div>
+                    <div class="sdk-card">
+                        <h3>Python SDK</h3>
+                        <p>Python client for data science and integration scenarios</p>
+                        <code>pip install roomzin-client</code>
+                    </div>
+                    <div class="sdk-card">
+                        <h3>C# SDK</h3>
+                        <p>.NET client for enterprise Windows environments</p>
+                        <code>Install-Package Roomzin.Client</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="integration-section">
+                <h2>Quick Integration Guide</h2>
+                <div class="integration-steps">
+                    <div class="step">
+                        <h3>1. Initialize Client</h3>
+                        <div class="code-block">
+                            <pre><code>// Java example
+RoomzinClient client = RoomzinClient.builder()
+    .endpoint("roomzin-cluster:8080")
+    .build();</code></pre>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <h3>2. Define Your Models</h3>
+                        <div class="code-block">
+                            <pre><code>// Property inventory model
+public class PropertyInventory {
+    private String propertyId;
+    private List<RoomType> roomTypes;
+    private Map<LocalDate, Availability> availability;
+    // ... getters and setters
+}</code></pre>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <h3>3. Perform Queries</h3>
+                        <div class="code-block">
+                            <pre><code>// Single query for complex searches
+SearchRequest request = SearchRequest.builder()
+    .location(geoPoint)
+    .checkIn(checkInDate)
+    .checkOut(checkOutDate)
+    .roomCount(2)
+    .amenities(Arrays.asList("wifi", "pool"))
+    .build();
+
+SearchResponse response = client.search(request);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-detail">
+                <h2>Key Integration Features</h2>
+                <div class="features-list">
+                    <div class="feature-detail">
+                        <h4>Single-Query Model</h4>
+                        <p>Complex searches (geo, amenities, categories, stars, cancellation rules, date ranges, pricing
+                            filters) handled in one request without in-memory joins.</p>
+                    </div>
+                    <div class="feature-detail">
+                        <h4>Automatic Cluster Awareness</h4>
+                        <p>SDKs automatically discover cluster topology, handle failover, and route requests efficiently
+                            without manual configuration.</p>
+                    </div>
+                    <div class="feature-detail">
+                        <h4>Zero-Downtime Operations</h4>
+                        <p>Clusters continue serving traffic while saving snapshots and performing maintenance
+                            operations.</p>
+                    </div>
+                    <div class="feature-detail">
+                        <h4>Effortless Bootstrapping</h4>
+                        <p>Load millions of records in seconds with 0.4M/s initial load speed and efficient memory
+                            utilization.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-reference">
+                <h2>REST API Reference</h2>
+                <p>For management and monitoring, Roomzin provides a comprehensive REST API:</p>
+
+                <div class="api-endpoints">
+                    <div class="endpoint">
+                        <h4>GET /health</h4>
+                        <p>Cluster health status and node information</p>
+                    </div>
+                    <div class="endpoint">
+                        <h4>GET /metrics</h4>
+                        <p>Performance metrics and cluster statistics</p>
+                    </div>
+                    <div class="endpoint">
+                        <h4>POST /admin/snapshot</h4>
+                        <p>Trigger manual snapshot creation</p>
+                    </div>
+                    <div class="endpoint">
+                        <h4>GET /admin/nodes</h4>
+                        <p>Cluster node information and status</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="support-section">
+                <h2>Need Help?</h2>
+                <div class="support-options">
+                    <div class="support-option">
+                        <h4>Technical Documentation</h4>
+                        <p>Complete API reference and architecture guide</p>
+                        <a href="#" class="btn btn-outline">View Full Docs</a>
+                    </div>
+                    <div class="support-option">
+                        <h4>Integration Support</h4>
+                        <p>Get help with your specific use case and requirements</p>
+                        <a href="#" class="btn btn-outline">Contact Support</a>
+                    </div>
+                    <div class="support-option">
+                        <h4>Demo Environment</h4>
+                        <p>Test Roomzin with your own data in our sandbox</p>
+                        <a href="#" class="btn btn-outline">Request Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Roomzin</h3>
+                    <p>High-performance inventory engine for the travel industry</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>contact@roomzin.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Roomzin. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
