@@ -1,0 +1,3232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="img/logo.ico">
+    <title>Documentation - Roomzin</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-light.min.css">
+</head>
+
+
+<body>
+    <!-- Mobile Sidebar Menu Button Codes -->
+    <button class="sidebar-menu-button">
+        <span>☰</span>
+    </button>
+
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <ul class="nav-list primary-nav">
+                <!-- 1. Overview (First - gives context) -->
+                <li class="nav-item dropdown-container">
+                    <a href="#overview" class="nav-link dropdown-toggle">
+                        <span class="nav-label">Overview</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item">
+                            <a href="#quick-start" class="nav-link dropdown-link">
+                                Quick Start &nbsp; 🚀
+                            </a>
+                        </li>
+                        <li class="nav-item"><a href="#data-model" class="nav-link dropdown-link">Data Model</a></li>
+                        <li class="nav-item"><a href="#architecture" class="nav-link dropdown-link">Architecture</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- 2. Installation (Single step - get binary) -->
+                <li class="nav-item">
+                    <a href="#installation" class="nav-link top-link">
+                        <span class="nav-label">Installation</span>
+                    </a>
+                </li>
+
+                <!-- 3. Seed DataSet (After install, before deployment) -->
+                <li class="nav-item">
+                    <a href="#seed-data" class="nav-link  top-link">
+                        <span class="nav-label">Seed DataSet</span>
+                    </a>
+                </li>
+
+                <!-- 5. Configuration (Specific to deployment mode) -->
+                <li class="nav-item dropdown-container">
+                    <a href="#" class="nav-link dropdown-toggle no-section">
+                        <span class="nav-label">Configuration</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item"><a href="#config" class="nav-link dropdown-link">Config</a></li>
+                        <li class="nav-item"><a href="#authentication" class="nav-link dropdown-link">Auth Config</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- 6. API & Integration (Using the deployed system) -->
+                <li class="nav-item">
+                    <a href="#rest-api" class="nav-link  top-link">
+                        <span class="nav-label">REST API</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#metrics" class="nav-link  top-link">
+                        <span class="nav-label">Metrics</span>
+                    </a>
+                </li>
+
+                <!-- 7. Integration (Client libraries) -->
+                <li class="nav-item dropdown-container">
+                    <a href="#integration" class="nav-link dropdown-toggle">
+                        <span class="nav-label">Integration</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item"><a href="#integration-go" class="nav-link dropdown-link">Go</a></li>
+                        <li class="nav-item"><a href="#integration-java" class="nav-link dropdown-link">Java</a></li>
+                        <li class="nav-item"><a href="#integration-python" class="nav-link dropdown-link">Python</a>
+                        </li>
+                        <li class="nav-item"><a href="#integration-csharp" class="nav-link dropdown-link">C#</a></li>
+                    </ul>
+                </li>
+
+                <!-- 8. Examples (Final - practical usage) -->
+                <li class="nav-item dropdown-container">
+                    <a href="#" class="nav-link dropdown-toggle no-section">
+                        <span class="nav-label">Examples</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item"><a href="#examples-go" class="nav-link dropdown-link">Go</a></li>
+                        <li class="nav-item"><a href="#examples-java" class="nav-link dropdown-link">Java</a></li>
+                        <li class="nav-item"><a href="#examples-python" class="nav-link dropdown-link">Python</a></li>
+                        <li class="nav-item"><a href="#examples-csharp" class="nav-link dropdown-link">C#</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#benchmark" class="nav-link  top-link">
+                        <span class="nav-label">Benchmark</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#run-test-cluster" class="nav-link top-link">
+                        <span class="nav-label">Run a test cluster</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#faq" class="nav-link  top-link">
+                        <span class="nav-label">FAQ</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <header class="sidebar-header" style="background-color: #FFF;">
+            <button class="sidebar-toggler">
+                <span>❮</span>
+            </button>
+        </header>
+    </aside>
+
+    <main class="main-content">
+        <header class="bg-white">
+            <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="logo text-2xl font-semibold">
+                    <img src="img/logo.png" style="margin: auto; width: 100px;" />
+                </div>
+                <div class="space-x-4">
+                    <a href="index.html" class="hover:text-blue-600">Home</a>
+                    <a href="performance.html" class="hover:text-blue-600">Performance</a>
+                    <a href="docs.html" class="font-semibold hover:text-blue-600">Docs</a>
+                </div>
+            </nav>
+        </header>
+        <section id="overview" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">Introduction</h2>
+            <hr class="border-gray-300 mb-4" />
+
+            <p class="mb-4">
+                Welcome to the <strong>Roomzin Docs</strong> — where you’ll learn how to make your booking engine
+                <em>blazingly fast</em>.
+            </p>
+
+            <p class="mb-4">
+                These docs are here to help you plug Roomzin into your system, store hotel and room data the smart way,
+                and serve lightning-quick search results — even during peak demand.
+            </p>
+
+            <p class="mb-4">
+                You’ll find short guides, clear API references, and examples that just work. No fluff, no filler — just
+                what you need to understand how Roomzin fits into your stack and how to make it shine.
+            </p>
+
+            <p class="mb-4">
+                <strong>Start with “Getting Started”</strong> to spin up your first instance and see what instant search
+                really feels like.
+            </p>
+        </section>
+
+        <section id="quick-start" class="content-section">
+            <h2 class="text-xl font-medium mb-4 text-gray-800">Quick Start</h2>
+            <p class="text-base mb-4 text-gray-600">Get Roomzin Running in Standalone Mode</p>
+            <hr class="border-gray-200 mb-4" />
+
+            <p class="mb-4 text-gray-700">
+                This guide walks you through setting up a single-node Roomzin instance, loading sample data via an
+                offline snapshot, and performing a simple search using SDKs. We'll use standalone mode for
+                simplicity—no clustering involved.
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">1. Obtain the Binary</h3>
+            <p class="mb-4 text-gray-700">
+                Contact support to receive the platform-specific Roomzin binary (&lt;5MB). Place it in your working
+                directory.
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">2. Prepare Configuration Files</h3>
+            <p class="mb-4 text-gray-700">
+                Create two YAML files: <code>roomzin.yml</code> for server settings and <code>auth.yml</code> for
+                authentication.
+            </p>
+
+            <h4 class="text-base font-medium mb-2 text-gray-700">roomzin.yml</h4>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>tcp:
+  listen_addr: "127.0.0.1"
+  port: 7777
+  max_connections: 1000
+
+auth_file: "auth.yml"
+api_port: 8080
+snapshot_path: "./snapshots"
+maintenance_hour: 3</code></pre>
+
+            <h4 class="text-base font-medium mb-2 text-gray-700">auth.yml</h4>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>tokens:
+  - token: abc123
+    role: admin
+  - token: client-token
+    role: client</code></pre>
+
+            <p class="mb-6 text-gray-700">
+                Ensure the <code>snapshot_path</code> directory (<code>./snapshots</code>) exists and is writable.
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">4. Provide an Offline Snapshot</h3>
+            <p class="mb-4">Roomzin supports creating snapshots from CSV files to initialize data efficiently. Snapshots
+                are significantly faster than sending insert queries, with the ability to ingest 4–5 million records per
+                second from CSV files. Use the <code>build-snapshot</code> command to generate snapshots, which are then
+                loaded from the configured <code>snapshot_path</code> at startup.</p>
+            <p class="mb-4">To create a snapshot for production, find and follow the instructions for building initial
+                data. But for now,
+                simply download the <a href="snapshot.tar.zst" download="snapshot.tar.zst"
+                    class="text-blue-600 hover:underline">snapshot.tar.zst</a> and place it in the
+                <code>./snapshots</code>
+                path.
+            </p>
+            <p class="mb-4">
+                This snapshot seeds 100 properties, each with 8 room types, carrying daily price and availability
+                packages for the 15 nights starting 15 July 2027.
+            </p>
+            <br />
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">4. Run Roomzin in Standalone Mode</h3>
+            <p class="mb-4 text-gray-700">
+                Start the server:
+            </p>
+            <pre
+                class="p-4 rounded mb-6 overflow-x-auto"><code>roomzin run --mode standalone --config roomzin.yml</code></pre>
+            <p class="text-gray-700">
+                Roomzin loads the snapshot automatically. Check logs for successful startup.
+            </p>
+            <br />
+            <h3 class="text-lg font-medium mb-2 text-gray-800">5. Connect and Perform a Simple Search</h3>
+            <p class="mb-4 text-gray-700">
+                Use an SDK to connect and search for availability in one of the sample segments (e.g., "segment_1").
+                Contact support for the SDK package. Below are tabbed examples for each language.
+            </p>
+
+            <!-- Tabbed Code Examples -->
+            <div class="tabs mb-6">
+                <ul class="flex border-b border-gray-200">
+                    <li class="mr-2"><a href="#go-tab"
+                            class="inline-block p-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">Go</a>
+                    </li>
+                    <li class="mr-2"><a href="#java-tab"
+                            class="inline-block p-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">Java</a>
+                    </li>
+                    <li class="mr-2"><a href="#python-tab"
+                            class="inline-block p-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">Python</a>
+                    </li>
+                    <li><a href="#csharp-tab"
+                            class="inline-block p-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent hover:border-gray-300">C#</a>
+                    </li>
+                </ul>
+
+                <div id="go-tab" class="tab-content p-4 rounded-b">
+                    <pre class="overflow-x-auto"><code>package main
+
+import (
+    "fmt"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    cfg := single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "client-token",
+    }
+    client, err := single.New(&cfg)
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    var limit uint64 = 10
+    results, err := client.SearchAvail(types.SearchAvailPayload{
+        Segment:    "segment_1",
+        RoomType:   "room_1",
+        Date:       []string{"2027-07-16", "2027-07-17"},
+        Limit:      &limit,
+    })
+    if err != nil {
+        panic(err)
+    }
+    for _, prop := range results {
+        fmt.Printf("Property: %s\n", prop.PropertyID)
+        for _, day := range prop.Days {
+            fmt.Printf("  Date: %s, Avail: %d, Price: %d\n", day.Date, day.Availability, day.FinalPrice)
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div id="java-tab" class="tab-content p-4 rounded-b hidden">
+                    <pre class="overflow-x-auto"><code>import java.time.Duration;
+import java.util.List;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.SearchAvailPayload;
+import com.roomzin.roomzinjava.types.PropertyAvail;
+
+public class QuickStart {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("client-token")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            List&lt;PropertyAvail&gt; results = client.searchAvail(SearchAvailPayload.builder()
+                .segment("segment_1")
+                .roomType("room_1")
+                .date(List.of("2027-07-16", "2027-07-17"))
+                .limit(10L)
+                .build());
+
+            for (PropertyAvail prop : results) {
+                System.out.println("Property: " + prop.getPropertyId());
+                for (DayAvail day : prop.getDays()) {
+                    System.out.printf("  Date: %s, Avail: %d, Price: %d%n", 
+                        day.getDate(), day.getAvailability(), day.getFinalPrice());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div id="python-tab" class="tab-content p-4 rounded-b hidden">
+                    <pre class="overflow-x-auto"><code>from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import SearchAvailPayload
+from roomzin_py.types.response import PropertyAvail
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("client-token") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    results = client.search_avail(SearchAvailPayload(
+        segment="segment_1",
+        room_type="room_1",
+        date=["2027-07-16", "2027-07-17"],
+        limit=10
+    ))
+    for prop in results:
+        print(f"Property: {prop.property_id}")
+        for day in prop.days:
+            print(f"  Date: {day.date}, Avail: {day.availability}, Price: {day.final_price}")
+finally:
+    client.close()</code></pre>
+                </div>
+
+                <div id="csharp-tab" class="tab-content p-4 rounded-b hidden">
+                    <pre class="overflow-x-auto"><code>using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+using Roomzin.Sdk.Types.Responses;
+
+class QuickStart
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("client-token")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            var results = await client.SearchAvailAsync(new SearchAvailPayload
+            {
+                Segment = "segment_1",
+                RoomType = "room_1",
+                Date = new[] { "2027-07-16", "2027-07-17" },
+                Limit = 10
+            });
+
+            foreach (var prop in results)
+            {
+                Console.WriteLine($"Property: {prop.PropertyId}");
+                foreach (var day in prop.Days)
+                {
+                    Console.WriteLine($"  Date: {day.Date}, Avail: {day.Availability}, Price: {day.FinalPrice}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <p class="mb-6 text-gray-700">
+                Run the code in your preferred language. It connects to the server, authenticates, and searches for
+                availability in "segment_1" for "room_1" on two dates. Adjust as needed for your data.
+            </p>
+
+            <hr />
+            <br />
+            <p class="mb-6 text-gray-700">
+                Quick start ✔️ — time to level-up. Dive into the full docs.
+            </p>
+
+        </section>
+
+        <section id="data-model" class="content-section mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">Data Model at a Glance</h2>
+            <p class="text-lg mb-4 sub-title">Everything hinges on three primitives:</p>
+            <ol class="list-decimal ml-6 mb-6">
+                <li>Property</li>
+                <li>Room Type</li>
+                <li>Daily Package</li>
+            </ol>
+            <hr class="border-gray-200 mb-4" />
+
+            <p class="mb-4 text-gray-700">
+                Together they form a self-contained, in-memory state machine that powers every update and search without
+                external caches or joins.
+            </p>
+
+            <p class="mb-6 text-gray-700">
+                Roomzin loads the “hot interval” (15, 30, 60 days or more) and keeps it mutable—add, remove, or patch
+                availability and prices in real time while queries remain instant.
+            </p>
+
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">Property</h3>
+            <p class="mb-4 text-gray-700">
+                A hotel or accommodation unit, sharded into segments that mirror real-world search patterns.
+                Paris’s ~1.8K hotels, for instance, split into 5 segments for parallel ingest and query.
+            </p>
+            <ul class="list-disc ml-6 mb-6">
+                <li>segment · area · property-id · type · category · stars · geo · amenities</li>
+            </ul>
+
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">Room Type</h3>
+            <p class="mb-6 text-gray-700">
+                The sellable rooms—Standard Double, Deluxe Suite, etc.—that belong to each property.
+            </p>
+
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">Package</h3>
+            <p class="mb-4 text-gray-700">
+                A daily, bookable slice of a room type within the hot interval, carrying:
+            </p>
+            <ul class="list-disc ml-6 mb-6">
+                <li>date · availability · final price · rate & cancellation rules</li>
+            </ul>
+
+            <hr class="mb-6" />
+            <p class="text-gray-700">
+                Drop Roomzin in and you get a zero-ops, in-memory inventory engine—no caches, expiry headaches, or joins
+                required. Plug in and run at speed.
+            </p>
+            <br />
+            <hr />
+            <br />
+            <h2 class="text-xl font-semibold mb-4">Constraints</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">for amenities and rate cancel only a predefined set of strings are accepted.</p>
+
+            <h3 class="text-xl mb-2">Amenities</h3>
+            <ul class="list-disc pl-6 mb-2 columns-2">
+                <li>wifi</li>
+                <li>pool</li>
+                <li>gym</li>
+                <li>parking</li>
+                <li>breakfast</li>
+                <li>spa</li>
+                <li>pet_friendly</li>
+                <li>bar</li>
+                <li>restaurant</li>
+                <li>air_conditioner</li>
+                <li>kitchen</li>
+                <li>laundry</li>
+                <li>shuttle</li>
+                <li>family_rooms</li>
+                <li>ev_charging</li>
+                <li>beach_access</li>
+            </ul>
+            <br />
+            <h3 class="text-xl  mb-2">Rate Cancellation</h3>
+            <ul class="list-disc pl-6 mb-2 columns-2">
+                <li>free_cancellation</li>
+                <li>non_refundable</li>
+                <li>pay_at_property</li>
+                <li>free_wifi</li>
+                <li>includes_breakfast</li>
+                <li>no_prepayment</li>
+                <li>partial_refund</li>
+                <li>instant_confirmation</li>
+            </ul>
+        </section>
+        <section id="architecture" class="content-section mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-xl font-medium mb-4 text-gray-800">Architecture Overview</h2>
+            <p class="text-base mb-4 text-gray-600">Fast, In-Memory, Self-Managed Booking Engine</p>
+            <hr class="border-gray-200 mb-4" />
+
+            <p class="mb-4 text-gray-700">
+                Roomzin is a high-performance, Rust-based booking engine built as a self-contained binary (&lt;5MB)
+                for
+                both standalone and clustered deployments. Its in-memory state machine, optimized for properties,
+                room
+                types, and daily packages, delivers low-latency searches and updates without external dependencies.
+                The
+                architecture is designed for simplicity, speed, and scalability, handling millions of records and
+                thousands of connections with consistent performance.
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Core Components</h3>
+            <p class="mb-4 text-gray-700">
+                Roomzin consists of three tightly integrated components, all part of a single binary, ensuring easy
+                deployment and operation.
+            </p>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li><b>TCP Server:</b> Handles client connections with one-time authentication per connection
+                    lifetime,
+                    using a custom, high-speed binary protocol. Supports up to 10,000 concurrent connections with
+                    minimal latency.</li>
+                <li><b>API Server:</b> Provides HTTP endpoints for admin and non-admin operations, including cluster
+                    status, node information, and Prometheus-format metrics for both TCP server and cluster health.
+                </li>
+                <li><b>Cluster Agent:</b> Manages node communication in clustered mode using QUIC with TLS and
+                    automatic
+                    certificate rotation, enabling secure and fast inter-node coordination.</li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Data Management</h3>
+            <p class="mb-4 text-gray-700">
+                Roomzin’s in-memory state machine is partitioned into segments for efficient data handling, with
+                robust
+                persistence mechanisms to ensure reliability.
+            </p>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li><b>Segmented State Machine:</b> Properties are grouped into segments (e.g., by region) for
+                    independent processing, enabling fast searches and updates across the hot interval (e.g., 15–60
+                    days).</li>
+                <li><b>Snapshot & WAL:</b> Binary snapshots load 4–5M records per second, with sizes under 1GB for
+                    large
+                    datasets. Write-ahead logging (WAL) ensures durability in clusters. Snapshots can be built
+                    offline
+                    from two CSV files mapping client data.</li>
+                <li><b>Maintenance:</b> Configurable maintenance hours trigger snapshot saves and automatic removal
+                    of
+                    past-day data, keeping the system lean.</li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Clustered Mode & Consensus</h3>
+            <p class="mb-4 text-gray-700">
+                Roomzin’s clustered mode ensures high availability and scalability with a Raft-like consensus
+                protocol,
+                maintaining fast eventual consistency across nodes.
+            </p>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li><b>Auto-Join & Catch-Up:</b> Nodes join clusters automatically with a seed address, fetching
+                    snapshots and WAL from the closest node to sync seamlessly.</li>
+                <li><b>Leader/Follower Model:</b> Only the leader handles writes, while followers serve reads. Fast
+                    leader failure detection and election ensure minimal disruption.</li>
+                <li><b>Zero-Downtime Snapshots:</b> The leader delegates snapshot saving to a follower, allowing
+                    uninterrupted operation during persistence.</li>
+                <li><b>Node Synchronization:</b> All nodes stay in sync, with no external service discovery needed.
+                    Admins can update the leader’s peer list, which propagates across the cluster.</li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">SDK & Client Interaction</h3>
+            <p class="mb-4 text-gray-700">
+                Roomzin’s SDKs (Go, Java, Python, C#) are optimized for performance and ease of use, leveraging the
+                custom binary protocol for efficient communication.
+            </p>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li><b>Decoupled Streams:</b> SDKs send request streams with client request IDs (clrid) and receive
+                    responses on a separate channel, ensuring high throughput.</li>
+                <li><b>Smart Routing:</b> In clustered mode, SDKs query the API server for cluster topology, route
+                    write
+                    requests to the leader, and read requests to the fastest follower based on response latencies.
+                </li>
+                <li><b>Minimal Setup:</b> SDKs need only one node address to fetch the full cluster schema,
+                    simplifying
+                    integration.</li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Security & Access Control</h3>
+            <p class="mb-4 text-gray-700">
+                Roomzin prioritizes security with simple yet robust access controls and encrypted communication.
+            </p>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li><b>Role-Based Access Control (RBAC):</b> Three access levels—admin (full control), client (SDK
+                    data
+                    operations), and monitoring (read-only)—configured via a simple auth.yml file.</li>
+                <li><b>Secure Communication:</b> TCP server uses one-time authentication per connection. Cluster
+                    agent
+                    uses QUIC with TLS and auto-rotating certificates.</li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Performance & Scalability</h3>
+            <p class="mb-4 text-gray-700">
+                Built in Rust, Roomzin is optimized for speed and resource efficiency, scaling seamlessly with data
+                size
+                and connections.
+            </p>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li><b>Low Latency:</b> Consistent performance whether handling 6M or 60M records, 10 or 1,000
+                    connections, with median query latencies in milliseconds.</li>
+                <li><b>Vertical & Horizontal Scaling:</b> Scales with more CPU cores or additional nodes, with no
+                    significant performance degradation.</li>
+                <li><b>Ops-Friendly Deployment:</b> Single self-contained binary (&lt;5MB) for both standalone and
+                    clustered modes, with YAML-based configuration for ports, buffers, and maintenance.</li>
+            </ul>
+        </section>
+        <section id="installation" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">Installation/Deployment</h2>
+            <hr class="border-gray-300 mb-4" />
+
+            <p class="mb-4 text-gray-700">
+                <b>Infrastructure-agnostic, performance-first.</b><br />
+                Roomzin is a standalone binary optimized for microsecond-level latency.<br />
+                It runs natively on any infrastructure — from dedicated servers to virtual machines — without external
+                dependencies.<br />
+                For maximum throughput and deterministic performance, deploy Roomzin directly on the host system and
+                avoid additional runtime layers such as containers or orchestration stacks.<br />
+                <i>Your infrastructure, your control.</i>
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">1. Obtain the Binary</h3>
+            <p class="mb-4">
+                Request the platform-specific Roomzin binary from support or your distribution channel.<br />
+                Each release includes builds for Linux, macOS, and Windows.
+            </p>
+            <pre><code>chmod +x roomzin
+./roomzin --version</code></pre>
+
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">2. Deploy as you need</h3>
+
+            <p class="mb-2 font-semibold">Standalone Mode</p>
+            <p class="mb-4">For single-node setups or development environments:</p>
+            <pre><code>roomzin run --mode standalone --config /path/to/roomzin.yml</code></pre>
+
+            <p class="mb-2 font-semibold">Clustered Mode</p>
+            <p class="mb-4">
+                For distributed, high-availability deployments (requires TLS configuration):
+            </p>
+            <pre><code>roomzin run --mode clustered --config /path/to/roomzin.yml</code></pre>
+            <p class="mb-4">
+                In clustered mode, nodes communicate over QUIC + TLS. Include the seed list, authentication file, and
+                required <code>.pem</code> certificates in your configuration.
+            </p>
+
+            <br />
+
+            <hr class="border-gray-300 mb-4" />
+
+            <p class="mb-4">
+                Roomzin adapts to your infrastructure — not the other way around.
+            </p>
+        </section>
+
+
+        <section id="seed-data" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">Building Offline Snapshots</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin supports creating snapshots from CSV files to initialize data efficiently. Snapshots
+                are significantly faster than sending insert queries, with the ability to ingest 4–5 million records per
+                second from CSV files. Use the <code>build-snapshot</code> command to generate snapshots, which are then
+                loaded from the configured <code>snapshot_path</code> at startup.</p>
+            <p class="mb-4">To create a snapshot, prepare two CSV files: <code>properties.csv</code> (listing
+                properties) and <code>packages.csv</code> (listing room types, availability, pricing, and rate
+                cancellation details). Place these files in a directory and specify it as the input path.</p>
+            <h3 class="text-xl font-semibold mb-2">Command</h3>
+            <pre><code>roomzin build-snapshot --shard-id &lt;shard_id&gt; --input-path /path/to/csvs --output-path /path/to/snapshot</code></pre>
+            <p class="mb-4">Parameters:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>--shard-id</code>: Unique shard identifier (e.g., "shard1").</li>
+                <li><code>--input-path</code>: Directory containing <code>properties.csv</code> and
+                    <code>packages.csv</code>.
+                </li>
+                <li><code>--output-path</code>: Directory to save snapshot files, which should match the
+                    <code>snapshot_path</code> in your configuration.
+                </li>
+            </ul>
+            <h3 class="text-xl font-semibold mb-2">CSV File Formats</h3>
+            <p class="mb-4"><b>properties.csv</b>: Defines properties with their details. Structure:</p>
+            <pre><code>PropertyID,Segment,Area,PropertyType,Category,Stars,Latitude,Longitude,Amenities
+prop_1,segment_1,New York,hotel,test,4,40.713800,-74.005000,wifi|pool|gym|parking
+</code></pre>
+            <p class="mb-4">Fields:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>PropertyID</code>: UUID string (36 chars) or ASCII text (max 14 chars).
+                    Examples: "550e8400-e29b-41d4-a716-446655440000" or "prop_1"
+                </li>
+                <li><code>Segment</code>: Primary grouping key for data partitioning and sharding.
+                    Choose segments that evenly distribute your properties (e.g., geographic regions,
+                    business units, or logical groups). This is a required field in search queries
+                    and critically impacts performance.
+                </li>
+                <li><code>Area</code>: Secondary grouping for finer data organization within a segment.
+                    Use areas to further categorize properties (e.g., neighborhoods, districts) for more targeted
+                    searches.
+                </li>
+                <li><code>PropertyType</code>: Type (e.g., "hotel").</li>
+                <li><code>Category</code>: Category (e.g., "test").</li>
+                <li><code>Stars</code>: Star rating (e.g., 4).</li>
+                <li><code>Latitude</code>, <code>Longitude</code>: Geographic coordinates.</li>
+                <li><code>Amenities</code>: Pipe-separated (<code>|</code>) list of amenities, mapped to the standard
+                    set (see Data Format and Limitations).</li>
+            </ul>
+            <p class="mb-4"><b>packages.csv</b>: Defines room types, availability, pricing, and rate cancellation
+                details for each property. Structure:</p>
+            <pre><code>PropertyID,RoomType,Date,Availability,FinalPrice,RateCancel
+prop_1,room_1,2025-10-03,7,120,free_cancellation|non_refundable|pay_at_property|includes_breakfast
+</code></pre>
+            <p class="mb-4">Fields:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>PropertyID</code>: Matches a property in <code>properties.csv</code>.</li>
+                <li><code>RoomType</code>: Room type identifier (e.g., "room_1"; up to 256 types, recommended &lt;10 for
+                    performance).</li>
+                <li><code>Date</code>: Date in short string format (e.g., "2025-10-03").</li>
+                <li><code>Availability</code>: Number of available rooms (e.g., 7).</li>
+                <li><code>FinalPrice</code>: Price for the room on that date (e.g., 120).</li>
+                <li><code>RateCancel</code>: Pipe-separated (<code>|</code>) list of rate cancellation options, mapped
+                    to the standard set (see Data Format and Limitations).</li>
+            </ul>
+            <p class="mb-4">After running the command, place the generated snapshot files in the
+                <code>snapshot_path</code> configured in <code>roomzin.yml</code>. Snapshots load quickly at startup, as
+                shown in the benchmarks.
+            </p>
+        </section>
+
+        <section id="authentication" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">Authentication</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin uses token-based authentication with role-based access control (RBAC) for the admin
+                API and certain actions. Tokens are defined in a separate YAML file specified in the server
+                configuration (<code>auth_file</code>).</p>
+            <p class="mb-4">Sample authentication file (<code>auth.yml</code>):</p>
+            <pre><code>tokens:
+  - token: abc123
+    role: admin
+  - token: c789
+    role: client
+  - token: mon456
+    role: monitoring
+</code></pre>
+            <p class="mb-4">Roles and Permissions:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><b>Admin</b>: Full system access to all endpoints and administrative commands (shutdown, update
+                    peers, TLS rotation, save snapshot).</li>
+                <li><b>Client</b>: Full access to SDK commands (excluding administrative operations: UpdatePeersList,
+                    SaveSnapshot, DelSegment, and Shutdown). Includes all Monitoring role permissions.</li>
+                <li><b>Monitoring</b>: Read-only access to system status endpoints: /healthz, /metrics, /snapshot-info,
+                    /node-info, /leader, and /peers (GET requests only).</li>
+            </ul>
+            <p class="mb-4">All admin API requests require a Bearer token in the Authorization header, e.g.,
+                <code>Authorization: Bearer abc123</code>. Invalid or unauthorized tokens return 401 or 403 errors.
+            </p>
+            <p class="mb-4">In clustered mode, tokens can be reloaded without restart via the /reload-tokens endpoint
+                (admin role required).</p>
+        </section>
+        <section id="config" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">Configuration</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin uses a YAML configuration file (<code>roomzin.yml</code>) to define server settings.
+                The file is automatically located in one of these paths (in order of priority):</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Specified via the <code>--config</code> CLI argument.</li>
+                <li>Current directory (<code>./roomzin.yml</code>).</li>
+                <li>System directory (<code>/etc/roomzin/roomzin.yml</code>).</li>
+            </ul>
+            <p class="mb-4">The configuration includes sections for core allocation, TCP settings, cluster settings,
+                authentication file path, API port, snapshot path, and maintenance hour. Below is a sample configuration
+                with default values explained:</p>
+            <pre><code>core_config:
+  cores_sys: 0  # Number of cores dedicated to the system (default: 0; auto-set if not set)
+  cores_state: 0  # Number of cores dedicated to the state machine processors(default: 0; auto-set if not set)
+
+tcp:
+  listen_addr: "127.0.0.1"  # TCP listen address (default: "127.0.0.1")
+  port: 7777  # TCP port for main service queries (default: 7777)
+  max_connections: 10000  # Maximum concurrent connections (default: 10000)
+  tcp_user_timeout_ms: 200  # TCP user timeout in milliseconds (default: 200)
+  tcp_keepalive_seconds: 30  # TCP keepalive interval in seconds (default: 30)
+  tcp_recv_buffer_size: 16384  # TCP receive buffer size in bytes
+  tcp_send_buffer_size: 2097152  # TCP send buffer size in bytes
+
+cluster:
+  node_id: "local"  # Unique node identifier (default: "local")
+  shard_id: "local"  # Shard identifier (default: "local")
+  zone_id: "local"  # Zone identifier (default: "local")
+  port: 17777  # Cluster port for node-to-node communication (default: 17777)
+  seed: ""  # Seed node address for cluster joining (default: "")
+  quorum_size: 3  # Quorum size for consensus (default: 3)
+  cert_path: ""  # Path to TLS certificate file (required for clustered mode)
+  key_path: ""  # Path to TLS private key file (required for clustered mode)
+  ca_cert_path: ""  # Path to CA certificate file (required for clustered mode)
+
+auth_file: ""  # Path to authentication YAML file (required)
+api_port: 0  # HTTP port for admin API (required; e.g., 8080)
+snapshot_path: ""  # Path to snapshot directory (required; must be writable)
+maintenance_hour: 0  # Hour (0-23) for scheduled maintenance (default: 0)
+</code></pre>
+            <p class="mb-4">Notes:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>cores_sys</code>: Number of CPU cores dedicated to system workers. These handle critical tasks
+                    and have higher priority to ensure reliability. Assign enough cores to avoid work stealing, context
+                    switching, or CPU-bound bottlenecks, which can increase tail latency. The number depends on your
+                    dataset size—larger datasets need more cores, but over-allocating beyond what's needed offers little
+                    benefit.</li>
+                <li><code>cores_state</code>: Number of CPU cores for state machine processors, which handle search and
+                    operation processing (the main workload). More cores here improve performance for larger datasets,
+                    but only if <code>cores_sys</code> is sufficient. If too many cores are assigned to
+                    <code>cores_state</code> and too few to <code>cores_sys</code>, system tasks become a bottleneck,
+                    degrading overall performance due to resource contention.
+                </li>
+                <li>Core configuration allows meaningful performance tuning; defaults to
+                    auto-detection based on hardware.</li>
+                <li><code>tcp_send_buffer_size</code>: Size of the TCP send buffer (in bytes) for server responses. A
+                    low value can bottleneck performance, especially for slow-reading clients (e.g., SDK or custom
+                    tools) that don’t read responses from the network quickly. This causes the server to block,
+                    increasing tail latency and degrading benchmark results. Set this based on your client’s reading
+                    speed and dataset size—larger datasets or slower clients may need a higher value. Test incrementally
+                    to avoid wasting memory while ensuring smooth data flow.</li>
+                <li>The snapshot path must be validated as writable during startup.</li>
+                <li>For clustered mode, provide valid TLS certificate paths for secure QUIC node-to-node communication.
+                    TLS is not enabled on TCP connections, as Roomzin is intended for internal use.</li>
+            </ul>
+
+            <hr />
+            <br />
+            <h2 class="text-2xl font-semibold mb-4">Hardcoded Limitations</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin caps search windows at 7 days to keep queries fast for the 95 % of users who only
+                need a week—full-database flexibility was traded for speed.
+            </p>
+
+        </section>
+        <section id="rest-api" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">API</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin provides an HTTP admin API on the configured <code>api_port</code> for monitoring
+                and management. All endpoints require authentication via Bearer token. The API differs slightly between
+                standalone and clustered modes.</p>
+            <h3 class="text-xl font-semibold mb-2">Common Endpoints</h3>
+            <div class="overflow-x-auto mb-4">
+                <table class="table-minimal">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left">Endpoint</th>
+                            <th class="px-4 py-2 text-left">Method</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                            <th class="px-4 py-2 text-left">Required Role</th>
+                            <th class="px-4 py-2 text-left">Response</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>/healthz</td>
+                            <td>GET</td>
+                            <td>Check node health (standalone: "active"/"unavailable";
+                                clustered: "active_leader"/"active_follower"/"unavailable")</td>
+                            <td>monitoring+</td>
+                            <td>Status code and text</td>
+                        </tr>
+                        <tr>
+                            <td>/metrics</td>
+                            <td>GET</td>
+                            <td>Prometheus metrics (standalone filters cluster metrics;
+                                clustered includes all)</td>
+                            <td>monitoring+</td>
+                            <td>Prometheus text format</td>
+                        </tr>
+                        <tr>
+                            <td>/save-snapshot</td>
+                            <td>POST</td>
+                            <td>Triggers snapshot process</td>
+                            <td>admin</td>
+                            <td>JSON message</td>
+                        </tr>
+                        <tr>
+                            <td>/shutdown</td>
+                            <td>POST</td>
+                            <td>Graceful shutdown (body: {"confirm": true})</td>
+                            <td>admin</td>
+                            <td>JSON message</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Clustered-Only Endpoints</h3>
+            <div class="overflow-x-auto mb-4">
+                <table class="table-minimal">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left">Endpoint</th>
+                            <th class="px-4 py-2 text-left">Method</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                            <th class="px-4 py-2 text-left">Required Role</th>
+                            <th class="px-4 py-2 text-left">Response</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>/reload-tokens</td>
+                            <td>POST</td>
+                            <td>Reload authentication tokens from file</td>
+                            <td>admin</td>
+                            <td>JSON message</td>
+                        </tr>
+                        <tr>
+                            <td>/node-info</td>
+                            <td>GET</td>
+                            <td>Get node details (leader_id, leader_url, shard_id, zone_id,
+                                node_id)</td>
+                            <td>monitoring+</td>
+                            <td>JSON object</td>
+                        </tr>
+                        <tr>
+                            <td>/leader</td>
+                            <td>GET</td>
+                            <td>Get current leader URL</td>
+                            <td>monitoring+</td>
+                            <td>JSON {"leader_url": "..."}</td>
+                        </tr>
+                        <tr>
+                            <td>/tls-rotate</td>
+                            <td>POST</td>
+                            <td>Signal TLS certificate rotation for node-to-node QUIC</td>
+                            <td>admin</td>
+                            <td>JSON message</td>
+                        </tr>
+                        <tr>
+                            <td>/snapshot-info</td>
+                            <td>GET</td>
+                            <td>Get current snapshot information</td>
+                            <td>monitoring+</td>
+                            <td>JSON SnapshotInfo</td>
+                        </tr>
+                        <tr>
+                            <td>/peers</td>
+                            <td>GET</td>
+                            <td>Get list of peer nodes</td>
+                            <td>monitoring+</td>
+                            <td>JSON array of strings</td>
+                        </tr>
+                        <tr>
+                            <td>/peers</td>
+                            <td>POST</td>
+                            <td>Update list of peer nodes (body: array of strings)</td>
+                            <td>admin</td>
+                            <td>JSON message</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mb-4">Use tools like curl for API calls, e.g.:</p>
+            <pre><code>curl -H "Authorization: Bearer abc123" http://localhost:8080/healthz</code></pre>
+        </section>
+        <section id="metrics" class="content-section">
+            <h2 class="text-xl font-medium mb-4 text-gray-800">Metrics Overview</h2>
+            <p class="text-base mb-4 text-gray-600">Prometheus Metrics for TCP Server and Cluster</p>
+            <hr class="border-gray-200 mb-4" />
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">TCP Server Metrics</h3>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li>tcp_connections: Active client connections (Gauge)</li>
+                <li>tcp_commands_total: Total commands processed (Counter)</li>
+                <li>tcp_bytes_received_total: Total bytes received (Counter)</li>
+                <li>tcp_bytes_sent_total: Total bytes sent (Counter)</li>
+                <li>tcp_errors_total: Total server errors (Counter)</li>
+                <li>tcp_client_errors_total: Total client errors (Counter)</li>
+                <li>tcp_client_disconnects_total: Total client disconnections (Counter)</li>
+                <li>tcp_client_login_fail_total: Total failed login attempts (Counter)</li>
+                <li>tcp_timeouts_total: Total request timeouts (Counter)</li>
+                <li>tcp_rejected_connections_total: Total rejected connections (Counter)</li>
+                <li>tcp_rejected_request_total: Total rejected requests (Counter)</li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Cluster Metrics</h3>
+            <h4 class="text-base font-medium mb-2 text-gray-700">Connection</h4>
+            <ul class="list-disc pl-6 mb-4 text-gray-700">
+                <li>cluster_connection_opened_total: Total connections opened (Counter)</li>
+                <li>cluster_connection_accepted_total: Total connections accepted (Counter)</li>
+                <li>cluster_connection_rejected_total: Total connections rejected (Counter)</li>
+                <li>cluster_connection_error_total: Total connection errors (Counter)</li>
+                <li>cluster_connection_dropped_total: Total connections dropped (Counter)</li>
+            </ul>
+
+            <h4 class="text-base font-medium mb-2 text-gray-700">Request/Response</h4>
+            <ul class="list-disc pl-6 mb-4 text-gray-700">
+                <li>cluster_message_sent_total: Total messages sent (Counter)</li>
+                <li>cluster_message_received_total: Total messages received (Counter)</li>
+                <li>cluster_bytes_sent_total: Total bytes sent (Counter)</li>
+                <li>cluster_bytes_received_total: Total bytes received (Counter)</li>
+                <li>cluster_send_error_total: Total send errors (Counter)</li>
+                <li>cluster_receive_error_total: Total receive errors (Counter)</li>
+                <li>cluster_broadcast_timeouts_total: Total broadcast timeouts (Counter)</li>
+            </ul>
+
+            <h4 class="text-base font-medium mb-2 text-gray-700">Condition</h4>
+            <ul class="list-disc pl-6 mb-4 text-gray-700">
+                <li>cluster_quorum_lost_count_total: Total quorum losses (Counter)</li>
+                <li>cluster_leader_failure_count_total: Total leader failures (Counter)</li>
+                <li>cluster_leader_changed_total: Total leader changes (Counter)</li>
+                <li>cluster_lagged_behind_leader_total: Total lag events behind leader (Counter)</li>
+            </ul>
+
+            <h4 class="text-base font-medium mb-2 text-gray-700">Snapshot</h4>
+            <ul class="list-disc pl-6 mb-4 text-gray-700">
+                <li>cluster_snapshot_produced_total: Total snapshots produced (Counter)</li>
+                <li>cluster_snapshot_size_bytes: Snapshot size in bytes (Gauge)</li>
+                <li>cluster_snapshot_save_duration_seconds: Snapshot save duration (Gauge)</li>
+                <li>cluster_snapshot_load_duration_seconds: Snapshot load duration (Gauge)</li>
+                <li>cluster_snapshot_failed_count_total: Total snapshot failures (Counter)</li>
+                <li>cluster_snapshot_transfer_count_total: Total snapshot transfers (Counter)</li>
+                <li>cluster_snapshot_transfer_duration_seconds: Snapshot transfer duration (Gauge)</li>
+            </ul>
+
+            <h4 class="text-base font-medium mb-2 text-gray-700">Write-Ahead Logging (WAL)</h4>
+            <ul class="list-disc pl-6 mb-6 text-gray-700">
+                <li>cluster_wal_flush_count_total: Total WAL flushes (Counter)</li>
+                <li>cluster_delayed_log_count_total: Total delayed logs (Counter)</li>
+                <li>cluster_rejected_replication_count_total: Total rejected replications (Counter)</li>
+                <li>cluster_last_applied_wal_index: Last applied WAL index (Gauge)</li>
+                <li>cluster_pending_wal_records: Pending WAL records (Gauge)</li>
+                <li>cluster_replicate_failed_count_total: Total replication failures (Counter)</li>
+                <li>cluster_wal_transfer_count_total: Total WAL transfers (Counter)</li>
+                <li>cluster_wal_transfer_duration_seconds: WAL transfer duration (Gauge)</li>
+            </ul>
+        </section>
+        <section id="integration" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">SDK Integration</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin provides SDKs in Go, Java, Python, and C# for querying and managing the in-memory
+                inventory engine over TCP. SDKs handle automatic routing, failover, load balancing, and connection
+                pooling. Select an SDK from the left menu to view its documentation.</p>
+
+            <br />
+            <h3><strong>List of TCP commands</strong></h3>
+            <br />
+            <table class="table-minimal">
+                <tbody>
+                    <tr>
+                        <td style="color: #5d0850;">Set Property</td>
+                        <td>Adds a new property or updates an existing one in the system.</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #5d0850;">Set Room Package</td>
+                        <td>Sets availability, price, and cancellation policies for a room type on a date.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="color: #5d0850;">Set Room Availability</td>
+                        <td>Sets the exact availability for a room type on a specific date.</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #5d0850;">Increment Room Availability</td>
+                        <td>Increases the availability for a room type on a specific date.</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #5d0850;">Decrement Room Availability</td>
+                        <td>Decreases the availability for a room type on a specific date.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td style="color: #107be5;">Search for Availability</td>
+                        <td>Queries the system based on search params like room type, dates, price, etc.</td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Search Properties</td>
+                        <td>Searches properties by segment, area, type, or other criteria.</td>
+                    </tr>
+                    <tr>
+                        <td>Property Exists</td>
+                        <td>Checks if a property exists in the system.</td>
+                    </tr>
+                    <tr>
+                        <td>Room Type Exists</td>
+                        <td>Checks if a specific room type exists for a property.</td>
+                    </tr>
+                    <tr>
+                        <td>List Room Types</td>
+                        <td>Lists all room types for a given property.</td>
+                    </tr>
+                    <tr>
+                        <td>List Dates of a Room Type</td>
+                        <td>Lists dates set for one of a given property's room type.</td>
+                    </tr>
+                    <tr>
+                        <td>Get Room Day Details</td>
+                        <td>Retrieves details for a room type on a specific date.</td>
+                    </tr>
+                    <tr>
+                        <td>List Segments</td>
+                        <td>Lists all segments and their property counts.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Delete Day for a Room Type</td>
+                        <td>Removes a room’s package for a specific date.</td>
+                    </tr>
+                    <tr>
+                        <td>Delete Day for a Property</td>
+                        <td>Removes all packages of a property on a specific date.</td>
+                    </tr>
+                    <tr>
+                        <td>Delete a Room Type</td>
+                        <td>Removes a specific room type from a property with all its packages.</td>
+                    </tr>
+                    <tr>
+                        <td>Delete Property</td>
+                        <td>Removes a property and cascade purges its packages.</td>
+                    </tr>
+                    <tr>
+                        <td>Delete Segment</td>
+                        <td>Removes a segment with all properties within the segment.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Save Snapshot</td>
+                        <td>Saves the current system data to a snapshot.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="integration-go" class="content-section">
+            <div class="container mx-auto px-4 py-8">
+                <h3 class="text-xl font-semibold mb-2">Go SDK</h3>
+                <p class="mb-4">The Go SDK provides a robust interface for interacting with Roomzin in both standalone
+                    and clustered modes. It supports property management, availability queries, and administrative
+                    tasks. The SDK is available via a provided package; contact support for access.</p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Install the SDK by importing the necessary packages.</p>
+                <pre><code class="language-go">import (
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/cluster"
+    "github.com/roomzin/roomzin-go/types"
+)
+</code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective configuration
+                    builders. Required fields include host, TCP port, and authentication token (see Authentication
+                    section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre><code class="language-go">package main
+import (
+    "time"
+    "github.com/roomzin/roomzin-go/single"
+)
+
+func GetClient() (api.CacheClientAPI, error) {
+    cfg, err := single.NewConfigBuilder().
+        WithHost("127.0.0.1").
+        WithTCPPort(7777).
+        WithToken("abc123").
+        WithTimeout(5 * time.Second).
+        WithKeepAlive(30 * time.Second).
+        Build()
+    if err != nil {
+        return nil, err
+    }
+    return single.New(&cfg)
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>Host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>TCPPort</code>: TCP port for queries (required, default: 7777).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre><code class="language-go">package main
+
+import (
+    "time"
+    "github.com/roomzin/roomzin-go/cluster"
+)
+
+func GetClient() (api.CacheClientAPI, error) {
+    cfg, err := cluster.NewConfigBuilder().
+        WithSeedHosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost").
+        WithTCPPort(7777).
+        WithAPIPort(8080).
+        WithToken("admin-token-123").
+        WithTimeout(30 * time.Second).
+        WithKeepAlive(30 * time.Second).
+        Build()
+    if err != nil {
+        return nil, err
+    }
+    return cluster.New(&cfg)
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SeedHosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>TCPPort</code>: TCP port for queries (required, default: 7777).</li>
+                    <li><code>APIPort</code>: HTTP port for admin API (required, e.g., 8080).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                    <li><code>MaxActiveConns</code>: Maximum open TCP connections (optional).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>CacheClientAPI</code> interface provides methods for managing properties,
+                    querying availability, and administrative tasks. All methods require appropriate authentication
+                    roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="table-minimal">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>SetProp</code></td>
+                                <td>Add or update a property</td>
+                                <td><code>SetPropPayload</code></td>
+                                <td><code>error</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SetRoomPkg</code></td>
+                                <td>Set room availability, price, and rate cancellation</td>
+                                <td><code>SetRoomPkgPayload</code></td>
+                                <td><code>error</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SetRoomAvl</code></td>
+                                <td>Set room availability for a date</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>uint8, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>IncRoomAvl</code></td>
+                                <td>Increment room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>uint8, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DecRoomAvl</code></td>
+                                <td>Decrement room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>uint8, error</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SearchAvail</code></td>
+                                <td>Search available rooms by criteria</td>
+                                <td><code>SearchAvailPayload</code></td>
+                                <td><code>[]PropertyAvail, error</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SearchProp</code></td>
+                                <td>Search properties by segment, area, type, etc.</td>
+                                <td><code>SearchPropPayload</code></td>
+                                <td><code>[]string, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropExist</code></td>
+                                <td>Check if a property exists</td>
+                                <td><code>string</code></td>
+                                <td><code>bool, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropRoomExist</code></td>
+                                <td>Check if a room type exists for a property</td>
+                                <td><code>PropRoomExistPayload</code></td>
+                                <td><code>bool, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropRoomList</code></td>
+                                <td>List room types for a property</td>
+                                <td><code>string</code></td>
+                                <td><code>[]string, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropRoomDateList</code></td>
+                                <td>List dates with availability for a room type</td>
+                                <td><code>PropRoomDateListPayload</code></td>
+                                <td><code>[]string, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>GetPropRoomDay</code></td>
+                                <td>Get room details for a specific date</td>
+                                <td><code>GetRoomDayRequest</code></td>
+                                <td><code>GetRoomDayResult, error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>GetSegments</code></td>
+                                <td>List all segments and their property counts</td>
+                                <td>None</td>
+                                <td><code>[]SegmentInfo, error</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelRoomDay</code></td>
+                                <td>Delete a room’s data for a specific date</td>
+                                <td><code>DelRoomDayRequest</code></td>
+                                <td><code>error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelPropDay</code></td>
+                                <td>Delete all room data for a property on a date</td>
+                                <td><code>DelPropDayRequest</code></td>
+                                <td><code>error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelPropRoom</code></td>
+                                <td>Delete a room type from a property</td>
+                                <td><code>DelPropRoomPayload</code></td>
+                                <td><code>error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelProp</code></td>
+                                <td>Delete a property</td>
+                                <td><code>string</code></td>
+                                <td><code>error</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelSegment</code></td>
+                                <td>Delete all properties in a segment</td>
+                                <td><code>string</code></td>
+                                <td><code>error</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SaveSnapshot</code></td>
+                                <td>Save current data to a snapshot</td>
+                                <td>None</td>
+                                <td><code>error</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>types</code> package. Key types include:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (Segment, Area, PropertyID, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (Segment, Area, Amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (Segment, RoomType, Date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>PropertyID</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000") or
+                        ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>Date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>Amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>RateCancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>RoomType</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+            </div>
+        </section>
+        <section id="integration-java" class="content-section">
+            <div class="container mx-auto px-4 py-8">
+                <h3 class="text-xl font-semibold mb-2">JAVA SDK</h3>
+                <p class="mb-4">The Java SDK provides a robust interface for interacting with Roomzin in both standalone
+                    and clustered modes. It supports property management, availability queries, and administrative
+                    tasks. The SDK is available via a provided Maven package; contact support for access.</p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Add the SDK to your Maven project via <code>pom.xml</code>.</p>
+                <pre><code class="language-java">&lt;dependency&gt;
+    &lt;groupId&gt;com.roomzin&lt;/groupId&gt;
+    &lt;artifactId&gt;roomzin-java-sdk&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+                <br />
+                <pre><code class="language-java">import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.client.cluster.ClusterConfig;
+import com.roomzin.roomzinjava.types.*;
+</code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective builder
+                    patterns. Required fields include host, TCP port, and authentication token (see Authentication
+                    section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre><code>import java.time.Duration;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+
+SingleConfig config = SingleConfig.builder()
+    .withHost("127.0.0.1")
+    .withTcpPort(7777)
+    .withAuthToken("abc123")
+    .withTimeout(Duration.ofSeconds(5))
+    .build();
+
+try (CacheClientApi client = new SingleClient(config)) {
+    // Use client
+} catch (Exception e) {
+    // Handle error
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>tcpPort</code>: TCP port for queries (required, default: 9999).</li>
+                    <li><code>authToken</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>timeout</code>: Request timeout (default: 2s).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre><code class="language-java">import java.time.Duration;
+import com.roomzin.roomzinjava.client.cluster.ClusterConfig;
+import com.roomzin.roomzinjava.client.cluster.ClusterClient;
+
+ClusterConfig config = ClusterConfig.builder()
+    .withSeedHosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost")
+    .withTcpPort(7777)
+    .withApiPort(8080)
+    .withAuthToken("admin-token-123")
+    .withTimeout(Duration.ofSeconds(30))
+    .withKeepAlive(Duration.ofSeconds(30))
+    .build();
+
+try (CacheClientApi client = new ClusterClient(config)) {
+    // Use client
+} catch (Exception e) {
+    // Handle error
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>seedHosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>tcpPort</code>: TCP port for queries (required, default: 0).</li>
+                    <li><code>apiPort</code>: HTTP port for admin API (required, default: 0).</li>
+                    <li><code>authToken</code>: Bearer token for authentication (required).</li>
+                    <li><code>timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>httpTimeout</code>: HTTP timeout (default: 2s).</li>
+                    <li><code>keepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                    <li><code>maxActiveConns</code>: Maximum open TCP connections (default: 10).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>CacheClientApi</code> interface provides methods for managing properties,
+                    querying availability, and administrative tasks. All methods require appropriate authentication
+                    roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="table-minimal">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>setProp</code></td>
+                                <td>Add or update a property</td>
+                                <td><code>SetPropPayload</code></td>
+                                <td><code>void</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>setRoomPkg</code></td>
+                                <td>Set room availability, price, and rate cancellation</td>
+                                <td><code>SetRoomPkgPayload</code></td>
+                                <td><code>void</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>setRoomAvl</code></td>
+                                <td>Set room availability for a date</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>short</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>incRoomAvl</code></td>
+                                <td>Increment room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>short</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>decRoomAvl</code></td>
+                                <td>Decrement room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>short</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>searchAvail</code></td>
+                                <td>Search available rooms by criteria</td>
+                                <td><code>SearchAvailPayload</code></td>
+                                <td><code>List&lt;PropertyAvail&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>searchProp</code></td>
+                                <td>Search properties by segment, area, type, etc.</td>
+                                <td><code>SearchPropPayload</code></td>
+                                <td><code>List&lt;String&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>propExist</code></td>
+                                <td>Check if a property exists</td>
+                                <td><code>String</code></td>
+                                <td><code>boolean</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>propRoomExist</code></td>
+                                <td>Check if a room type exists for a property</td>
+                                <td><code>PropRoomExistPayload</code></td>
+                                <td><code>boolean</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>propRoomList</code></td>
+                                <td>List room types for a property</td>
+                                <td><code>String</code></td>
+                                <td><code>List&lt;String&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>propRoomDateList</code></td>
+                                <td>List dates with availability for a room type</td>
+                                <td><code>PropRoomDateListPayload</code></td>
+                                <td><code>List&lt;String&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>getPropRoomDay</code></td>
+                                <td>Get room details for a specific date</td>
+                                <td><code>GetRoomDayRequest</code></td>
+                                <td><code>GetRoomDayResult</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>getSegments</code></td>
+                                <td>List all segments and their property counts</td>
+                                <td>None</td>
+                                <td><code>List&lt;SegmentInfo&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>delRoomDay</code></td>
+                                <td>Delete a room's data for a specific date</td>
+                                <td><code>DelRoomDayRequest</code></td>
+                                <td><code>void</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>delPropDay</code></td>
+                                <td>Delete all room data for a property on a date</td>
+                                <td><code>DelPropDayRequest</code></td>
+                                <td><code>void</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>delPropRoom</code></td>
+                                <td>Delete a room type from a property</td>
+                                <td><code>DelPropRoomPayload</code></td>
+                                <td><code>void</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>delProp</code></td>
+                                <td>Delete a property</td>
+                                <td><code>String</code></td>
+                                <td><code>void</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>delSegment</code></td>
+                                <td>Delete all properties in a segment</td>
+                                <td><code>String</code></td>
+                                <td><code>void</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>saveSnapshot</code></td>
+                                <td>Save current data to a snapshot</td>
+                                <td>None</td>
+                                <td><code>void</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>types</code> package. Key types include:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (Segment, Area, PropertyID, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (Segment, Area, Amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (Segment, RoomType, Date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>PropertyID</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000") or
+                        ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>Date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>Amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>RateCancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>RoomType</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+            </div>
+        </section>
+        <section id="integration-python" class="content-section">
+            <div class="container mx-auto px-4 py-8">
+                <h3 class="text-xl font-semibold mb-2">Python SDK</h3>
+                <p class="mb-4">The Python SDK provides a robust interface for interacting with Roomzin in both
+                    standalone and clustered modes. It supports property management, availability queries, and
+                    administrative tasks. The SDK is available via a provided PyPI package; contact support for access.
+                </p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Install the SDK using pip. </p>
+
+                <pre><code class="language-python">pip install roomzin-py
+</code></pre>
+                <br />
+                <pre><code>from roomzin_py.api import CacheClientAPI
+from roomzin_py.single import new_config_builder as single_config_builder, new_client as single_client
+from roomzin_py.cluster import new_config_builder as cluster_config_builder, new_client as cluster_client
+from roomzin_py.types.request import SetPropPayload, SearchPropPayload, SearchAvailPayload, SetRoomPkgPayload, UpdRoomAvlPayload
+from roomzin_py.types.response import PropertyAvail
+</code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective builder classes.
+                    Required fields include host, TCP port, and authentication token (see Authentication section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre><code class="language-python">from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .with_keep_alive(30.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    # Use client
+    pass
+finally:
+    client.close()
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>tcp_port</code>: TCP port for queries (required).</li>
+                    <li><code>auth_token</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>timeout</code>: Request timeout in seconds (default: 2.0).</li>
+                    <li><code>keep_alive</code>: TCP keepalive interval in seconds (default: 30.0).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre><code class="language-python">from roomzin_py.cluster import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+
+config = new_config_builder() \
+    .with_seed_hosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost") \
+    .with_tcp_port(7777) \
+    .with_api_port(8080) \
+    .with_token("admin-token-123") \
+    .with_timeout(30.0) \
+    .with_http_timeout(2.0) \
+    .with_keep_alive(30.0) \
+    .with_max_active_conns(10) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    # Use client
+    pass
+finally:
+    client.close()
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>seed_hosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>tcp_port</code>: TCP port for queries (required).</li>
+                    <li><code>api_port</code>: HTTP port for admin API (required).</li>
+                    <li><code>auth_token</code>: Bearer token for authentication (required).</li>
+                    <li><code>timeout</code>: Request timeout in seconds (default: 2.0).</li>
+                    <li><code>http_timeout</code>: HTTP timeout in seconds (default: 2.0).</li>
+                    <li><code>keep_alive</code>: TCP keepalive interval in seconds (default: 30.0).</li>
+                    <li><code>max_active_conns</code>: Maximum open TCP connections (default: 10).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>CacheClientAPI</code> abstract base class provides methods for managing
+                    properties, querying availability, and administrative tasks. All methods require appropriate
+                    authentication roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="table-minimal">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>set_prop</code></td>
+                                <td>Add or update a property</td>
+                                <td><code>SetPropPayload</code></td>
+                                <td><code>None</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>set_room_pkg</code></td>
+                                <td>Set room availability, price, and rate cancellation</td>
+                                <td><code>SetRoomPkgPayload</code></td>
+                                <td><code>None</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>set_room_avl</code></td>
+                                <td>Set room availability for a date</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>int</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>inc_room_avl</code></td>
+                                <td>Increment room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>int</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>dec_room_avl</code></td>
+                                <td>Decrement room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>int</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>search_avail</code></td>
+                                <td>Search available rooms by criteria</td>
+                                <td><code>SearchAvailPayload</code></td>
+                                <td><code>List[PropertyAvail]</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>search_prop</code></td>
+                                <td>Search properties by segment, area, type, etc.</td>
+                                <td><code>SearchPropPayload</code></td>
+                                <td><code>List[str]</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>prop_exist</code></td>
+                                <td>Check if a property exists</td>
+                                <td><code>str</code></td>
+                                <td><code>bool</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>prop_room_exist</code></td>
+                                <td>Check if a room type exists for a property</td>
+                                <td><code>PropRoomExistPayload</code></td>
+                                <td><code>bool</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>prop_room_list</code></td>
+                                <td>List room types for a property</td>
+                                <td><code>str</code></td>
+                                <td><code>List[str]</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>prop_room_date_list</code></td>
+                                <td>List dates with availability for a room type</td>
+                                <td><code>PropRoomDateListPayload</code></td>
+                                <td><code>List[str]</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>get_prop_room_day</code></td>
+                                <td>Get room details for a specific date</td>
+                                <td><code>GetRoomDayRequest</code></td>
+                                <td><code>GetRoomDayResult</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>get_segments</code></td>
+                                <td>List all segments and their property counts</td>
+                                <td>None</td>
+                                <td><code>List[SegmentInfo]</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>del_room_day</code></td>
+                                <td>Delete a room's data for a specific date</td>
+                                <td><code>DelRoomDayRequest</code></td>
+                                <td><code>None</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>del_prop_day</code></td>
+                                <td>Delete all room data for a property on a date</td>
+                                <td><code>DelPropDayRequest</code></td>
+                                <td><code>None</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>del_prop_room</code></td>
+                                <td>Delete a room type from a property</td>
+                                <td><code>DelPropRoomPayload</code></td>
+                                <td><code>None</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>del_prop</code></td>
+                                <td>Delete a property</td>
+                                <td><code>str</code></td>
+                                <td><code>None</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>del_segment</code></td>
+                                <td>Delete all properties in a segment</td>
+                                <td><code>str</code></td>
+                                <td><code>None</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>save_snapshot</code></td>
+                                <td>Save current data to a snapshot</td>
+                                <td>None</td>
+                                <td><code>None</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>roomzin_py.types</code> module. Key types include:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (segment, area, property_id, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (segment, area, amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (segment, room_type, date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>property_id</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000")
+                        or ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>rate_cancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>room_type</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+            </div>
+        </section>
+        <section id="integration-csharp" class="content-section">
+            <div class="container mx-auto px-4 py-8">
+                <h3 class="text-xl font-semibold mb-2">CSharp SDK</h3>
+                <p class="mb-4">The C# SDK provides a robust interface for interacting with Roomzin in both standalone
+                    and clustered modes. It supports property management, availability queries, and administrative
+                    tasks. The SDK is available via a provided NuGet package; contact support for access.</p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Install the SDK using NuGet.</p>
+                <pre><code class="language-csharp">dotnet add package Roomzin.Sdk
+</code></pre>
+                <br />
+                <pre><code class="language-csharp">using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Internal.Cluster;
+using Roomzin.Sdk.Types.Requests;
+using Roomzin.Sdk.Types.Responses;
+</code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective builder classes.
+                    Required fields include host, TCP port, and authentication token (see Authentication section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre><code class="language-csharp">using System;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+
+var config = new ConfigBuilder()
+    .WithHost("127.0.0.1")
+    .WithTcpPort(7777)
+    .WithToken("abc123")
+    .WithTimeout(TimeSpan.FromSeconds(5))
+    .WithKeepAlive(TimeSpan.FromSeconds(30))
+    .Build();
+
+await using var client = Client.New(config);
+// Use client
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>Host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>TcpPort</code>: TCP port for queries (required).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre><code class="language-csharp">using System;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Cluster;
+
+var config = new ClusterConfigBuilder()
+    .WithSeedHosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost")
+    .WithTcpPort(7777)
+    .WithApiPort(8080)
+    .WithToken("admin-token-123")
+    .WithTimeout(TimeSpan.FromSeconds(30))
+    .WithHttpTimeout(TimeSpan.FromSeconds(2))
+    .WithKeepAlive(TimeSpan.FromSeconds(30))
+    .WithMaxActiveConns(10)
+    .Build();
+
+await using var client = Client.New(config);
+// Use client
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SeedHosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>TcpPort</code>: TCP port for queries (required).</li>
+                    <li><code>ApiPort</code>: HTTP port for admin API (required).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>HttpTimeout</code>: HTTP timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                    <li><code>MaxActiveConns</code>: Maximum open TCP connections (default: 10).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>ICacheClientApi</code> interface provides methods for managing properties,
+                    querying availability, and administrative tasks. All methods are asynchronous and require
+                    appropriate authentication roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="table-minimal">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>SetPropAsync</code></td>
+                                <td>Add or update a property</td>
+                                <td><code>SetPropPayload</code></td>
+                                <td><code>Task</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SetRoomPkgAsync</code></td>
+                                <td>Set room availability, price, and rate cancellation</td>
+                                <td><code>SetRoomPkgPayload</code></td>
+                                <td><code>Task</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SetRoomAvlAsync</code></td>
+                                <td>Set room availability for a date</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>Task&lt;byte&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>IncRoomAvlAsync</code></td>
+                                <td>Increment room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>Task&lt;byte&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DecRoomAvlAsync</code></td>
+                                <td>Decrement room availability</td>
+                                <td><code>UpdRoomAvlPayload</code></td>
+                                <td><code>Task&lt;byte&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SearchAvailAsync</code></td>
+                                <td>Search available rooms by criteria</td>
+                                <td><code>SearchAvailPayload</code></td>
+                                <td><code>Task&lt;List&lt;PropertyAvail&gt;&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SearchPropAsync</code></td>
+                                <td>Search properties by segment, area, type, etc.</td>
+                                <td><code>SearchPropPayload</code></td>
+                                <td><code>Task&lt;List&lt;string&gt;&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropExistAsync</code></td>
+                                <td>Check if a property exists</td>
+                                <td><code>string</code></td>
+                                <td><code>Task&lt;bool&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropRoomExistAsync</code></td>
+                                <td>Check if a room type exists for a property</td>
+                                <td><code>PropRoomExistPayload</code></td>
+                                <td><code>Task&lt;bool&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropRoomListAsync</code></td>
+                                <td>List room types for a property</td>
+                                <td><code>string</code></td>
+                                <td><code>Task&lt;List&lt;string&gt;&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>PropRoomDateListAsync</code></td>
+                                <td>List dates with availability for a room type</td>
+                                <td><code>PropRoomDateListPayload</code></td>
+                                <td><code>Task&lt;List&lt;string&gt;&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>GetPropRoomDayAsync</code></td>
+                                <td>Get room details for a specific date</td>
+                                <td><code>GetRoomDayRequest</code></td>
+                                <td><code>Task&lt;GetRoomDayResult&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>GetSegmentsAsync</code></td>
+                                <td>List all segments and their property counts</td>
+                                <td>None</td>
+                                <td><code>Task&lt;List&lt;SegmentInfo&gt;&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelRoomDayAsync</code></td>
+                                <td>Delete a room's data for a specific date</td>
+                                <td><code>DelRoomDayRequest</code></td>
+                                <td><code>Task</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelPropDayAsync</code></td>
+                                <td>Delete all room data for a property on a date</td>
+                                <td><code>DelPropDayRequest</code></td>
+                                <td><code>Task</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelPropRoomAsync</code></td>
+                                <td>Delete a room type from a property</td>
+                                <td><code>DelPropRoomPayload</code></td>
+                                <td><code>Task</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelPropAsync</code></td>
+                                <td>Delete a property</td>
+                                <td><code>string</code></td>
+                                <td><code>Task</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>DelSegmentAsync</code></td>
+                                <td>Delete all properties in a segment</td>
+                                <td><code>string</code></td>
+                                <td><code>Task</code></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td><code>SaveSnapshotAsync</code></td>
+                                <td>Save current data to a snapshot</td>
+                                <td>None</td>
+                                <td><code>Task</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>Roomzin.Sdk.Types</code> namespace. Key types include:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (Segment, Area, PropertyId, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (Segment, Area, Amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (Segment, RoomType, Date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>PropertyId</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000") or
+                        ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>Date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>Amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>RateCancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>RoomType</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+            </div>
+        </section>
+        <section id="examples-go" class="content-section">
+            <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+            <p class="mb-4">Below are examples of the most commonly used Go SDK methods for managing properties and
+                querying availability.</p>
+            <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+            <p class="mb-4">Add or update a property using <code>SetProp</code>.</p>
+            <pre><code class="language-go">package main
+
+import (
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    err = client.SetProp(types.SetPropPayload{
+        Segment:      "segment_1",
+        Area:         "New York",
+        PropertyID:   "550e8400-e29b-41d4-a716-446655440000",
+        PropertyType: "hotel",
+        Category:     "luxury",
+        Stars:        4,
+        Latitude:     40.7138,
+        Longitude:    -74.0050,
+        Amenities:    []string{"wifi", "pool", "gym"},
+    })
+    if err != nil {
+        panic(err)
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+            <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                <code>SetRoomPkg</code>.
+            </p>
+            <pre><code class="language-go">package main
+
+import (
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    avail := uint8(10)
+    price := uint32(150)
+    err = client.SetRoomPkg(types.SetRoomPkgPayload{
+        PropertyID:   "prop_1",
+        RoomType:     "single",
+        Date:         "2025-10-05",
+        Availability: &avail,
+        FinalPrice:   &price,
+        RateCancel:   []string{"free_cancellation", "pay_at_property"},
+    })
+    if err != nil {
+        panic(err)
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+            <p class="mb-4">Reduce room availability for a specific date using <code>DecRoomAvl</code>.</p>
+            <pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    newAvail, err := client.DecRoomAvl(types.UpdRoomAvlPayload{
+        PropertyID: "prop_1",
+        RoomType:   "single",
+        Date:       "2025-10-05",
+        Amount:     1,
+    })
+    if err != nil {
+        panic(err)
+    }
+    fmt.Printf("New availability: %d\n", newAvail)
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+            <p class="mb-4">Search for available rooms by criteria using <code>SearchAvail</code>.</p>
+            <pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    var limit uint64 = 100
+    results, err := client.SearchAvail(types.SearchAvailPayload{
+        Segment:    "segment_1",
+        RoomType:   "single",
+        Date:       []string{"2025-10-05", "2025-10-06"},
+        Amenities:  []string{"wifi"},
+        RateCancel: []string{"free_cancellation"},
+        Limit:      &limit,
+    })
+    if err != nil {
+        panic(err)
+    }
+    for _, prop := range results {
+        fmt.Printf("Property: %s\n", prop.PropertyID)
+        for _, day := range prop.Days {
+            fmt.Printf("  Date: %s, Avail: %d, Price: %d\n", day.Date, day.Availability, day.FinalPrice)
+        }
+    }
+}
+</code></pre>
+            </div>
+        </section>
+        <section id="examples-java" class="content-section">
+            <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+            <p class="mb-4">Below are examples of the most commonly used Java SDK methods for managing properties
+                and querying availability.</p>
+            <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+            <p class="mb-4">Add or update a property using <code>setProp</code>.</p>
+            <pre><code class="language-java">import java.time.Duration;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.SetPropPayload;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            client.setProp(SetPropPayload.builder()
+                .segment("segment_1")
+                .area("New York")
+                .propertyId("550e8400-e29b-41d4-a716-446655440000")
+                .propertyType("hotel")
+                .category("luxury")
+                .stars((short) 4)
+                .latitude(40.7138)
+                .longitude(-74.0050)
+                .amenities(List.of("wifi", "pool", "gym"))
+                .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+            <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                <code>setRoomPkg</code>.
+            </p>
+            <pre><code class="language-java">import java.time.Duration;
+import java.util.List;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.SetRoomPkgPayload;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            client.setRoomPkg(SetRoomPkgPayload.builder()
+                .propertyId("prop_1")
+                .roomType("single")
+                .date("2025-10-05")
+                .availability((short) 10)
+                .finalPrice(150)
+                .rateCancel(List.of("free_cancellation", "pay_at_property"))
+                .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+            <p class="mb-4">Reduce room availability for a specific date using <code>decRoomAvl</code>.</p>
+            <pre><code class="language-java">import java.time.Duration;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.UpdRoomAvlPayload;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            short newAvail = client.decRoomAvl(UpdRoomAvlPayload.builder()
+                .propertyId("prop_1")
+                .roomType("single")
+                .date("2025-10-05")
+                .amount((short) 1)
+                .build());
+            System.out.println("New availability: " + newAvail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+            <p class="mb-4">Search for available rooms by criteria using <code>searchAvail</code>.</p>
+            <pre><code class="language-java">import java.time.Duration;
+import java.util.List;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.SearchAvailPayload;
+import com.roomzin.roomzinjava.types.PropertyAvail;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            List&lt;PropertyAvail&gt; results = client.searchAvail(SearchAvailPayload.builder()
+                .segment("segment_1")
+                .roomType("single")
+                .date(List.of("2025-10-05", "2025-10-06"))
+                .amenities(List.of("wifi"))
+                .rateCancel(List.of("free_cancellation"))
+                .limit(100L)
+                .build());
+
+            for (PropertyAvail prop : results) {
+                System.out.println("Property: " + prop.getPropertyId());
+                for (DayAvail day : prop.getDays()) {
+                    System.out.printf("  Date: %s, Avail: %d, Price: %d%n", 
+                        day.getDate(), day.getAvailability(), day.getFinalPrice());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+            </div>
+        </section>
+        <section id="examples-python" class="content-section">
+            <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+            <p class="mb-4">Below are examples of the most commonly used Python SDK methods for managing properties
+                and querying availability.</p>
+            <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+            <p class="mb-4">Add or update a property using <code>set_prop</code>.</p>
+            <pre><code class="language-python">from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import SetPropPayload
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    client.set_prop(SetPropPayload(
+        segment="segment_1",
+        area="New York",
+        property_id="550e8400-e29b-41d4-a716-446655440000",
+        property_type="hotel",
+        category="luxury",
+        stars=4,
+        latitude=40.7138,
+        longitude=-74.0050,
+        amenities=["wifi", "pool", "gym"]
+    ))
+finally:
+    client.close()
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+            <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                <code>set_room_pkg</code>.
+            </p>
+            <pre><code class="language-python">from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import SetRoomPkgPayload
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    client.set_room_pkg(SetRoomPkgPayload(
+        property_id="prop_1",
+        room_type="single",
+        date="2025-10-05",
+        availability=10,
+        final_price=150,
+        rate_cancel=["free_cancellation", "pay_at_property"]
+    ))
+finally:
+    client.close()
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+            <p class="mb-4">Reduce room availability for a specific date using <code>dec_room_avl</code>.</p>
+            <pre><code class="language-python">from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import UpdRoomAvlPayload
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    new_avail = client.dec_room_avl(UpdRoomAvlPayload(
+        property_id="prop_1",
+        room_type="single",
+        date="2025-10-05",
+        amount=1
+    ))
+    print(f"New availability: {new_avail}")
+finally:
+    client.close()
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+            <p class="mb-4">Search for available rooms by criteria using <code>search_avail</code>.</p>
+            <pre><code class="language-python">from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import SearchAvailPayload
+from roomzin_py.types.response import PropertyAvail
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    results = client.search_avail(SearchAvailPayload(
+        segment="segment_1",
+        room_type="single",
+        date=["2025-10-05", "2025-10-06"],
+        amenities=["wifi"],
+        rate_cancel=["free_cancellation"],
+        limit=100
+    ))
+    for prop in results:
+        print(f"Property: {prop.property_id}")
+        for day in prop.days:
+            print(f"  Date: {day.date}, Avail: {day.availability}, Price: {day.final_price}")
+finally:
+    client.close()
+</code></pre>
+            </div>
+        </section>
+        <section id="examples-csharp" class="content-section">
+            <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+            <p class="mb-4">Below are examples of the most commonly used C# SDK methods for managing properties and
+                querying availability.</p>
+            <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+            <p class="mb-4">Add or update a property using <code>SetPropAsync</code>.</p>
+            <pre><code class="language-csharp">using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            await client.SetPropAsync(new SetPropPayload
+            {
+                Segment = "segment_1",
+                Area = "New York",
+                PropertyId = "550e8400-e29b-41d4-a716-446655440000",
+                PropertyType = "hotel",
+                Category = "luxury",
+                Stars = 4,
+                Latitude = 40.7138,
+                Longitude = -74.0050,
+                Amenities = new[] { "wifi", "pool", "gym" }
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+            <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                <code>SetRoomPkgAsync</code>.
+            </p>
+            <pre><code class="language-csharp">using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            await client.SetRoomPkgAsync(new SetRoomPkgPayload
+            {
+                PropertyId = "prop_1",
+                RoomType = "single",
+                Date = "2025-10-05",
+                Availability = 10,
+                FinalPrice = 150,
+                RateCancel = new[] { "free_cancellation", "pay_at_property" }
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+            <p class="mb-4">Reduce room availability for a specific date using <code>DecRoomAvlAsync</code>.</p>
+            <pre><code class="language-csharp">using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            byte newAvail = await client.DecRoomAvlAsync(new UpdRoomAvlPayload
+            {
+                PropertyId = "prop_1",
+                RoomType = "single",
+                Date = "2025-10-05",
+                Amount = 1
+            });
+            Console.WriteLine($"New availability: {newAvail}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+            <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+            <p class="mb-4">Search for available rooms by criteria using <code>SearchAvailAsync</code>.</p>
+            <pre><code class="language-csharp">using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+using Roomzin.Sdk.Types.Responses;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            var results = await client.SearchAvailAsync(new SearchAvailPayload
+            {
+                Segment = "segment_1",
+                RoomType = "single",
+                Date = new[] { "2025-10-05", "2025-10-06" },
+                Amenities = new[] { "wifi" },
+                RateCancel = new[] { "free_cancellation" },
+                Limit = 100
+            });
+
+            foreach (var prop in results)
+            {
+                Console.WriteLine($"Property: {prop.PropertyId}");
+                foreach (var day in prop.Days)
+                {
+                    Console.WriteLine($"  Date: {day.Date}, Avail: {day.Availability}, Price: {day.FinalPrice}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+            </div>
+
+        </section>
+        <section id="benchmark" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">Benchmark Roomzin</h2>
+            <a href="performance.html" class="btn-orng">See Benchmark Report</a>
+            <hr class="border-gray-300 mb-4" />
+
+            <p class="mb-4 text-gray-700">
+                <b>Measure Roomzin's performance with precision.</b><br />
+                Benchmarking Roomzin lets you test its performance under various workloads using the
+                <code>roomzin-bench</code> binary. This tool generates test data, runs benchmarks, and measures metrics
+                like response times. The process involves generating CSV files, creating a snapshot, running the Roomzin
+                server, and executing benchmarks in either <b>regular</b> (steady load) or <b>spike</b> (burst load)
+                mode. Follow the steps below to get started, with clear explanations of each option to guide you.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">1. Prepare the Binaries</h3>
+            <p class="mb-4">
+                Ensure you have the <code>roomzin</code> binary (obtained from your support channel) and the
+                <code>roomzin-bench</code> binary. Download
+                <a href="roomzin-bench" download="roomzin-bench" class="text-blue-600 hover:underline">roomzin-bench</a>
+                and place both in your working directory. Make them
+                executable:
+            </p>
+            <pre><code>chmod +x roomzin
+chmod +x roomzin-bench</code></pre>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">2. Generate CSV Files</h3>
+            <p class="mb-4">
+                Use <code>roomzin-bench generate-csv</code> to create CSV files for benchmarking. These files define the
+                dataset (properties, segments, room types, and days) used in tests. Run in a terminal (Shell 1):
+            </p>
+            <pre><code>./roomzin-bench generate-csv --num-segments 4 --num-properties 2500 --num-room-types 8 --num-days 30 --output-dir ./csvs</code></pre>
+            <p class="mb-4 text-gray-700">
+                <b>Options explained:</b>
+            <ul class="list-disc pl-5 mb-4">
+                <li><code>--num-segments</code>: Number of market segments (e.g., 4 for segment_1 to segment_4). Affects
+                    payload variety.</li>
+                <li><code>--num-properties</code>: Number of properties (e.g., hotels). Higher values increase dataset
+                    size.</li>
+                <li><code>--num-room-types</code>: Number of room types per property. Impacts data complexity.</li>
+                <li><code>--num-days</code>: Number of days for availability data. Use 30 for a month-long dataset.</li>
+                <li><code>--output-dir</code>: Directory to save CSV files (e.g., ./csvs).</li>
+            </ul>
+            This generates CSV files in <code>./csvs</code> for use in snapshots and benchmarks.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">3. Build a Snapshot</h3>
+            <p class="mb-4">
+                In another terminal (Shell 2), use <code>roomzin build-snapshot</code> to create a snapshot from the CSV
+                files. The snapshot prepares data for the Roomzin server:
+            </p>
+            <pre><code>./roomzin build-snapshot --shard-id 1 --input-path ./csvs --output-path ./snapshots</code></pre>
+            <p class="mb-4 text-gray-700">
+                The snapshot is saved in <code>./snapshots</code> and is required for benchmarking.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">4. Run the Roomzin Server</h3>
+            <p class="mb-4">
+                In Shell 2, start the Roomzin server in standalone mode:
+            </p>
+            <pre><code>./roomzin run --mode standalone --config ./roomzin.yml</code></pre>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">5. Run Benchmarks</h3>
+            <p class="mb-4">
+                In Shell 1, use <code>roomzin-bench benchmark</code> to run performance tests. The tool first
+                establishes connections to the server (including login) before triggering the benchmark. Choose between
+                two modes:
+            <ul class="list-disc pl-5 mb-4">
+                <li><b>Regular mode</b>: Distributes a total number of requests evenly across connections, scheduling
+                    them within each second of the benchmark duration. Ideal for testing steady, sustained loads.</li>
+                <li><b>Spike mode</b>: Sends a single burst of requests across all connections at once, simulating
+                    sudden traffic surges (e.g., a booking rush). Perfect for measuring tail latency under extreme load.
+                </li>
+            </ul>
+            You can run either a <code>search</code> benchmark (queries availability) or an <code>update</code>
+            benchmark (modifies availability). Below are example commands with explanations.
+            </p>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Regular Search Benchmark</h4>
+            <p class="mb-4">
+                Run a steady-state search benchmark with 50 connections, 2000 total requests, querying 3 days, and a
+                result limit of 200:
+            </p>
+            <pre><code>./roomzin-bench benchmark regular -t abc123 -c 50 -r 2000 --num-segments 4 search --num-days 3 --limit 200</code></pre>
+            <p class="mb-4 text-gray-700">
+                <b>Options explained (before <code>search</code>):</b>
+            <ul class="list-disc pl-5 mb-2">
+                <li><code>-t, --token</code>: Authentication token for the server (required, e.g., abc123).</li>
+                <li><code>-c, --connections</code>: Number of concurrent connections to the server (default: 50). Each
+                    connection handles a portion of the total requests.</li>
+                <li><code>-r, --requests</code>: Total number of requests, split evenly across connections (default:
+                    100). Requests are scheduled within each second of the duration.</li>
+                <li><code>--num-segments</code>: Number of segments for search queries (default: 4). Must match CSV
+                    generation.</li>
+                <li><code>--host</code>: Server host (default: 127.0.0.1).</li>
+                <li><code>--port</code>: Server port (default: 7777).</li>
+                <li><code>--duration-secs</code>: Benchmark duration in seconds (default: 1). Requests are spread over
+                    this time.</li>
+            </ul>
+            <b>Search-specific options (after <code>search</code>):</b>
+            <ul class="list-disc pl-5 mb-2">
+                <li><code>--num-days</code>: Number of days to query (1-7, default: 3, capped at 7).</li>
+                <li><code>--limit</code>: Max search results per query (1-300, default: 300, capped at 300).</li>
+            </ul>
+            </p>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Spike Search Benchmark</h4>
+            <p class="mb-4">
+                Run a spike search benchmark with 50 connections and 2000 requests in a single burst, querying 3 days,
+                with a limit of 200:
+            </p>
+            <pre><code>./roomzin-bench benchmark spike -t abc123 -c 50 --spike-reqs 2000 --num-segments 4 search --num-days 3 --limit 200</code></pre>
+            <p class="mb-4 text-gray-700">
+                <b>Options explained (before <code>search</code>):</b>
+            <ul class="list-disc pl-5 mb-2">
+                <li><code>-t, --token</code>: Authentication token (required).</li>
+                <li><code>-c, --connections</code>: Number of concurrent connections (default: 50). Each connection
+                    sends a portion of the spike requests simultaneously.</li>
+                <li><code>--spike-reqs</code>: Number of requests in the single burst (default: 2000).</li>
+                <li><code>--num-segments</code>: Number of segments for queries (default: 4).</li>
+                <li><code>--host</code>: Server host (default: 127.0.0.1).</li>
+                <li><code>--port</code>: Server port (default: 7777).</li>
+                <li><code>--duration-secs</code>: Benchmark duration in seconds (default: 10). Must be long enough to
+                    capture all responses.</li>
+            </ul>
+            <b>Search-specific options (after <code>search</code>):</b>
+            <ul class="list-disc pl-5 mb-2">
+                <li><code>--num-days</code>: Number of days to query (1-7, default: 3).</li>
+                <li><code>--limit</code>: Max search results per query (1-300, default: 300).</li>
+            </ul>
+            <b>Why use spikes?</b> Spike mode simulates sudden, high-intensity traffic (e.g., a flash sale), helping you
+            measure tail latency (worst-case response times) under extreme load, which is critical for ensuring
+            reliability during peak usage.
+            </p>
+
+            <h4 class="text-lg font-semibold mt-4 mb-2">Update Benchmark Example</h4>
+            <p class="mb-4">
+                For an update benchmark (modifying availability), omit search-specific options:
+            </p>
+            <pre><code>./roomzin-bench benchmark regular -t abc123 -c 50 -r 2000 --num-segments 4 update</code></pre>
+
+            <p class="mb-4 text-gray-700">
+                Repeat benchmarks with different settings (e.g., more connections or requests) without regenerating CSV
+                files or snapshots.
+            </p>
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">6. Stop the Server</h3>
+            <p class="mb-4">
+                After benchmarking, stop the Roomzin server in Shell 2 by pressing <code>Ctrl+C</code> or sending a
+                termination signal.
+            </p>
+
+            <hr class="border-gray-300 mb-4" />
+
+            <p class="mb-4">
+                Roomzin's benchmarking is repeatable and flexible, letting you test steady or burst workloads to
+                optimize performance for your use case. For support, contact your Roomzin representative.
+            </p>
+
+            <hr class="border-gray-300 mb-4" />
+            <br />
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">IMPORTANT: Tuning the Roomzin Server</h3>
+            <p class="mb-4">
+                If benchmark results (e.g., high tail latency or slow response times) are not satisfactory, tune the
+                Roomzin server by adjusting the <code>core_config</code> section in <code>roomzin.yml</code>. This
+                section controls how CPU cores are allocated for optimal performance:
+            </p>
+            <pre><code>core_config:
+  cores_sys: x
+  cores_state: y</code></pre>
+            <p class="mb-4 text-gray-700">
+                <b>Options explained:</b>
+            <ul class="list-disc pl-5 mb-4">
+                <li><code>cores_sys</code>: Number of CPU cores dedicated to system workers. These handle critical tasks
+                    and have higher priority to ensure reliability. Assign enough cores to avoid work stealing, context
+                    switching, or CPU-bound bottlenecks, which can increase tail latency. The number depends on your
+                    dataset size—larger datasets need more cores, but over-allocating beyond what's needed offers little
+                    benefit.</li>
+                <li><code>cores_state</code>: Number of CPU cores for state machine processors, which handle search and
+                    operation processing (the main workload). More cores here improve performance for larger datasets,
+                    but only if <code>cores_sys</code> is sufficient. If too many cores are assigned to
+                    <code>cores_state</code> and too few to <code>cores_sys</code>, system tasks become a bottleneck,
+                    degrading overall performance due to resource contention.
+                </li>
+            </ul>
+            <b>Tuning tips:</b> Prioritize <code>cores_sys</code> for resilience and low latency, as system tasks are
+            more sensitive to resource competition. Test different configurations using benchmarks to find the balance
+            that minimizes tail latency and maximizes
+            throughput. Contact your Roomzin representative for dataset-specific guidance.
+            </p>
+            <ul class="list-disc pl-5 mb-4">
+                <li><code>tcp_send_buffer_size</code>: Size of the TCP send buffer (in bytes) for server responses. A
+                    low value can bottleneck performance, especially for slow-reading clients (e.g., SDK or custom
+                    tools) that don’t read responses from the network quickly. This causes the server to block,
+                    increasing tail latency and degrading benchmark results. Set this based on your client’s reading
+                    speed and dataset size—larger datasets or slower clients may need a higher value. Test incrementally
+                    to avoid wasting memory while ensuring smooth data flow.</li>
+            </ul>
+
+        </section>
+        <section id="run-test-cluster" class="content-section">
+            <h2 class="text-xl font-medium mb-4 text-gray-800">Run a Test Cluster</h2>
+            <p class="text-base mb-4 text-gray-600">Set Up a 3-Node Roomzin Cluster for Testing</p>
+            <hr class="border-gray-200 mb-4" />
+
+            <p class="mb-4 text-gray-700">
+                This guide walks you through setting up a 3-node Roomzin cluster on Ubuntu servers (e.g., 22.04 LTS) for
+                testing purposes. It uses a simple deployment script to automate setup, requiring only SSH access and
+                minimal configuration. This is ideal for dev teams to quickly see Roomzin's clustered mode in action,
+                with no external tools or complex orchestration.
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Prerequisites</h3>
+            <ul class="list-disc pl-6 mb-4 text-gray-700">
+                <li>Three Ubuntu servers (VMs or cloud instances) with sudo access and SSH enabled.</li>
+                <li>Roomzin binary obtained from support (see <a href="#installation"
+                        class="nav-link top-link text-blue-600 hover:underline">Installation</a>).</li>
+                <li>Snapshot built as per <a href="#seed-data"
+                        class="nav-link top-link text-blue-600 hover:underline">Seed DataSet</a>.
+                </li>
+                <li>Passwordless SSH access to each server (run <code>ssh-keygen</code> and
+                    <code>ssh-copy-id user@ip</code> for each).
+                </li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">1. Download and Prepare Deployment Scripts</h3>
+            <p class="mb-4 text-gray-700">
+                Download the deployment scripts zip from our website and extract it to a local directory (e.g.,
+                <code>roomzin-deploy/</code>):
+            </p>
+            <p class="mb-4 text-gray-700">
+                <a href="roomzin-deployment.zip" download="roomzin-deployment.zip"
+                    class="text-blue-600 hover:underline">roomzin-deployment.zip</a>
+            </p>
+            <p class="mb-4 text-gray-700">
+                The extracted folder should contain:
+            </p>
+            <ul class="list-disc pl-6 mb-4 text-gray-700">
+                <li><code>gen_certs.sh</code>: Generates TLS certificates for the cluster.</li>
+                <li><code>deploy.sh</code>: Deploys Roomzin to a server.</li>
+                <li><code>roomzin</code>: Roomzin binary (copy with the roomzin binary you obtained).</li>
+                <li><code>configs/roomzin.yml</code>: Sample server configuration.</li>
+                <li><code>configs/auth.yml</code>: Sample authentication file.</li>
+                <li><code>hosts_entries.txt</code>: IP-to-hostname mappings for cluster nodes.</li>
+                <li><code>csvs/</code>: Directory for your seed data files from your database. Copy your csv files here.
+                </li>
+                <li><code>snapshots/</code>: Directory for your snapshot file. Copy your snapshot file here.</li>
+                <li><code>certs/</code>: Directory for generated certificates.</li>
+            </ul>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">2. Prepare Configuration Files</h3>
+            <p class="mb-4 text-gray-700">
+                Edit <code>configs/roomzin.yml</code> and <code>configs/auth.yml</code> to match your setup. Use the
+                samples provided in the zip as a starting point.
+            </p>
+            <h4 class="text-base font-medium mb-2 text-gray-700">roomzin.yml</h4>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>core_config:
+  cores_sys: 0
+  cores_state: 0
+tcp:
+  listen_addr: "0.0.0.0"  # Bind to all interfaces
+  port: 7777
+  max_connections: 10000
+cluster:
+  node_id: "local"  # Updated by deploy.sh
+  shard_id: "shard1"
+  zone_id: "zone1"
+  port: 17777
+  seed: "roomzin-0,roomzin-1,roomzin-2"  # List all node hostnames
+  quorum_size: 3
+  cert_path: "/opt/roomzin/certs/cert.pem"
+  key_path: "/opt/roomzin/certs/key.pem"
+  ca_cert_path: "/opt/roomzin/certs/ca.pem"
+auth_file: "/opt/roomzin/configs/auth.yml"
+api_port: 8080
+snapshot_path: "/opt/roomzin/snapshots"
+maintenance_hour: 3</code></pre>
+            <p class="mb-4 text-gray-700">
+                Ensure <code>seed</code> lists all node hostnames (e.g., <code>roomzin-0,roomzin-1,roomzin-2</code>) and
+                paths match the remote setup (<code>/opt/roomzin/...</code>).
+            </p>
+            <h4 class="text-base font-medium mb-2 text-gray-700">auth.yml</h4>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>tokens:
+  - token: abc123
+    role: admin
+  - token: client-token
+    role: client
+  - token: mon456
+    role: monitoring</code></pre>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">3. Build and Place Snapshot</h3>
+            <p class="mb-4 text-gray-700">
+                Generate an offline seed dataset as described in
+                <a href="#seed-data" class="nav-link top-link text-blue-600 hover:underline">
+                    <span class="nav-label">Seed DataSet</span>
+                </a>. Run:
+            </p>
+            <pre
+                class="p-4 rounded mb-4 overflow-x-auto"><code>roomzin build-snapshot --shard-id shard1 --input-path ./csvs --output-path ./snapshots</code></pre>
+            <p class="mb-4 text-gray-700">
+                Place <code>snapshot.tar.zst</code> in <code>roomzin-deploy/snapshots/</code>. Nodes will extract and
+                load it automatically (followers can sync from the cluster, the cluster shares this even if one of them
+                has access to the snapshot files but its faster if all have it locally).
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">4. Configure Host Mappings</h3>
+            <p class="mb-4 text-gray-700">
+                Edit <code>hosts_entries.txt</code> to map each server's IP to its hostname. Example for a 3-node
+                cluster:
+            </p>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>10.0.0.1 roomzin-0
+10.0.0.2 roomzin-1
+10.0.0.3 roomzin-2</code></pre>
+            <p class="mb-4 text-gray-700">
+                Replace IPs with your servers' actual IPs. These mappings are added to <code>/etc/hosts</code> on each
+                node for name resolution.
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">5. Generate TLS Certificates</h3>
+            <p class="mb-4 text-gray-700">
+                For clustered mode, generate a root CA and per-node certificates (valid for 365 days) with:
+            </p>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>chmod +x gen_certs.sh
+./gen_certs.sh roomzin-0 roomzin-1 roomzin-2</code></pre>
+            <p class="mb-4 text-gray-700">
+                This creates <code>certs/ca.pem</code> (shared CA) and subdirectories <code>certs/roomzin-0/</code>,
+                etc., each with <code>cert.pem</code> (server cert) and <code>key.pem</code> (private key). Certificates
+                match the hostnames in <code>hosts_entries.txt</code>.
+            </p>
+
+            <h3 class="text-lg font-medium mb-2 text-gray-800">6. Deploy to Each Node</h3>
+            <p class="mb-4 text-gray-700">
+                Deploy Roomzin to each server using <code>deploy.sh</code>. Make it executable:
+            </p>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>chmod +x deploy.sh</code></pre>
+            <p class="mb-4 text-gray-700">
+                Run for each node, specifying the server, mode, and node ID. Example for a 3-node cluster:
+            </p>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>./deploy.sh --server user@10.0.0.1 --mode clustered --node-id roomzin-0
+./deploy.sh --server user@10.0.0.2 --mode clustered --node-id roomzin-1
+./deploy.sh --server user@10.0.0.3 --mode clustered --node-id roomzin-2</code></pre>
+            <p class="mb-4 text-gray-700">
+                The script:
+            <ul class="list-disc pl-6">
+                <li>Copies the binary, configs, certs, and snapshot to <code>/opt/roomzin/</code>.</li>
+                <li>Updates <code>/etc/hosts</code> with mappings from <code>hosts_entries.txt</code>.</li>
+                <li>Sets <code>node_id</code> in <code>roomzin.yml</code> to match the hostname.</li>
+                <li>Runs the roomzin server</li>
+            </ul>
+            Nodes join the cluster automatically via the <code>seed</code> list in <code>roomzin.yml</code>. The
+            snapshot is copied to all nodes, but followers can sync from the cluster if omitted.
+            </p>
+            <br />
+            <h3 class="text-lg font-medium mb-2 text-gray-800">7. Verify the Cluster</h3>
+            <p class="mb-4 text-gray-700">
+                Check each node's status:
+            </p>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>ssh user@10.0.0.1 journalctl -u roomzin -f</code></pre>
+            <p class="mb-4 text-gray-700">
+                Verify cluster health via the admin API (use an admin token from <code>auth.yml</code>):
+            </p>
+            <pre class="p-4 rounded mb-4 overflow-x-auto"><code>curl -H "Authorization: Bearer abc123" http://10.0.0.1:8080/healthz
+curl -H "Authorization: Bearer abc123" http://10.0.0.1:8080/peers</code></pre>
+            <p class="mb-4 text-gray-700">
+                The <code>/healthz</code> endpoint should return <code>active_leader</code> or
+                <code>active_follower</code>. The <code>/peers</code> endpoint lists all nodes (e.g.,
+                <code>["roomzin-0", "roomzin-1", "roomzin-2"]</code>).
+            </p>
+            <br />
+            <h3 class="text-lg font-medium mb-2 text-gray-800">8. Test with SDKs</h3>
+            <p class="mb-4 text-gray-700">
+                Use an SDK (Go, Java, Python, or C#) to connect and query the cluster. See SDK Integration
+                for details. For clustered mode, configure
+                the SDK with the seed hosts (e.g., <code>roomzin-0,roomzin-1,roomzin-2</code>) and API port (8080).
+            </p>
+            <br />
+            <h3 class="text-lg font-medium mb-2 text-gray-800">Troubleshooting</h3>
+            <ul class="list-disc pl-6 mb-4 text-gray-700">
+                <li><b>Startup fails?</b> Check logs (<code>journalctl -u roomzin</code>) for config or cert errors.
+                    Ensure <code>snapshot_path</code> is writable.</li>
+                <li><b>Node not joining cluster?</b> Verify <code>seed</code> list, <code>/etc/hosts</code> mappings,
+                    and TLS certs (run <code>gen_certs.sh</code> correctly).</li>
+                <li><b>Authentication errors?</b> Use a valid token from <code>auth.yml</code> with <code>Bearer</code>
+                    header.</li>
+                <li><b>High latency?</b> Check server resources and tune the server as explained in the configuration
+                    section.</li>
+            </ul>
+
+            <p class="mb-4 text-gray-700">
+                This setup is for testing only.
+            </p>
+        </section>
+        <section id="faq" class="content-section">
+            <h2 class="text-2xl font-semibold mb-4">Troubleshooting and FAQs</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4"><b>Q: Startup fails with config error?</b></p>
+            <p class="mb-4">A: Check config file paths, snapshot directory writability, and TLS certs for clustered
+                mode.</p>
+            <p class="mb-4"><b>Q: Authentication fails?</b></p>
+            <p class="mb-4">A: Verify token in auth file and use Bearer header. Reload tokens if changed (clustered
+                only).</p>
+            <p class="mb-4"><b>Q: Node not joining cluster?</b></p>
+            <p class="mb-4">A: Ensure seed address, quorum size, and TLS certs are correct. Check logs for errors.</p>
+            <p class="mb-4"><b>Q: High latency?</b></p>
+            <p class="mb-4">A: Tune core_config, increase segments, or use more hardware. Refer to benchmarks for
+                expectations.</p>
+        </section>
+    </main>
+
+    <!-- Script -->
+    <script src="js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+</body>
+
+</html>
