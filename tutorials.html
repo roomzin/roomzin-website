@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials - Roomzin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">Roomzin</div>
+            <div>
+                <a href="index.html">Home</a>
+                <a href="investors.html">Investors</a>
+                <a href="technology.html">Technology</a>
+                <a href="benchmarks.html">Benchmarks</a>
+                <a href="docs.html">Docs</a>
+                <a href="tutorials.html" class="active">Tutorials</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Roomzin Tutorials</h1>
+        <p>Quickstart examples for integrating Roomzin with Java, Go, Python, and .NET SDKs.</p>
+    </div>
+
+    <section>
+        <h2>Java SDK</h2>
+        <p>Install via Maven:</p>
+        <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.roomzin&lt;/groupId&gt;
+  &lt;artifactId&gt;rz-java&lt;/artifactId&gt;
+  &lt;version&gt;0.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+        <p>Sample usage:</p>
+        <pre><code>import com.roomzin.Client;
+
+public class Example {
+    public static void main(String[] args) {
+        Client client = new Client("http://localhost:8080");
+        var result = client.queryAvailability("NYC", "2025-06-01", "2025-06-07");
+        System.out.println(result);
+    }
+}
+</code></pre>
+    </section>
+
+    <section>
+        <h2>Go SDK</h2>
+        <p>Install:</p>
+        <pre><code>go get github.com/roomzin/rz-go</code></pre>
+        <p>Sample usage:</p>
+        <pre><code>package main
+
+import (
+    "fmt"
+    "github.com/roomzin/rz-go"
+)
+
+func main() {
+    client := rz.NewClient("http://localhost:8080")
+    result, _ := client.QueryAvailability("NYC", "2025-06-01", "2025-06-07")
+    fmt.Println(result)
+}
+</code></pre>
+    </section>
+
+    <section>
+        <h2>Python SDK</h2>
+        <p>Install:</p>
+        <pre><code>pip install rz-py</code></pre>
+        <p>Sample usage:</p>
+        <pre><code>from roomzin import Client
+
+client = Client("http://localhost:8080")
+result = client.query_availability("NYC", "2025-06-01", "2025-06-07")
+print(result)
+</code></pre>
+    </section>
+
+    <section>
+        <h2>.NET SDK</h2>
+        <p>Install:</p>
+        <pre><code>dotnet add package RzDotNet --version 0.1.0</code></pre>
+        <p>Sample usage:</p>
+        <pre><code>using Roomzin;
+
+class Program {
+    static void Main(string[] args) {
+        var client = new Client("http://localhost:8080");
+        var result = client.QueryAvailability("NYC", "2025-06-01", "2025-06-07");
+        Console.WriteLine(result);
+    }
+}
+</code></pre>
+    </section>
+
+    <section style="text-align:center;">
+        <h2>Next Steps</h2>
+        <p>These examples show basic queries. For advanced queries (filters, pricing, multi-room searches), see the <a
+                href="docs.html">Documentation</a>.</p>
+        <a href="contact.html" class="btn">Request Full SDK Access</a>
+    </section>
+
+    <footer>
+        <p>© 2025 Roomzin. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

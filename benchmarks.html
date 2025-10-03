@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmarks - Roomzin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">Roomzin</div>
+            <div>
+                <a href="index.html">Home</a>
+                <a href="investors.html">Investors</a>
+                <a href="technology.html">Technology</a>
+                <a href="benchmarks.html" class="active">Benchmarks</a>
+                <a href="docs.html">Docs</a>
+                <a href="tutorials.html">Tutorials</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Roomzin Benchmarks</h1>
+        <p>Proven speed and reliability at scale.</p>
+    </div>
+
+    <section>
+        <h2>System Specifications</h2>
+        <ul>
+            <li>OS: Ubuntu 25.04</li>
+            <li>Hardware: ASUS ZenBook UX325EA</li>
+            <li>Processor: Intel® Core™ i7-1165G7 × 8</li>
+            <li>Memory: 16 GB RAM</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Snapshot Performance</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dataset</th>
+                    <th>Initial Snapshot Rate</th>
+                    <th>Save Time</th>
+                    <th>Load Time</th>
+                    <th>Input Size</th>
+                    <th>Snapshot Size</th>
+                    <th>Memory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>4.8M records</td>
+                    <td>0.4–0.5M/sec</td>
+                    <td>113 ms</td>
+                    <td>361 ms</td>
+                    <td>450 MB</td>
+                    <td>70 MB</td>
+                    <td>200 MB</td>
+                </tr>
+                <tr>
+                    <td>48M records</td>
+                    <td>0.4–0.5M/sec</td>
+                    <td>945 ms</td>
+                    <td>4,965 ms</td>
+                    <td>4.6 GB</td>
+                    <td>680 MB</td>
+                    <td>2.5 GB</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Performance: 4.8M Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Connections</th>
+                    <th>Requests</th>
+                    <th>RPS</th>
+                    <th>Min (ms)</th>
+                    <th>P50 (ms)</th>
+                    <th>P95 (ms)</th>
+                    <th>Max (ms)</th>
+                    <th>Error (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.326</td>
+                    <td>0.876</td>
+                    <td>1.441</td>
+                    <td>4.302</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.177</td>
+                    <td>0.669</td>
+                    <td>1.371</td>
+                    <td>4.651</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>50</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.298</td>
+                    <td>0.856</td>
+                    <td>1.336</td>
+                    <td>2.882</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>50</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.041</td>
+                    <td>1.445</td>
+                    <td>3.339</td>
+                    <td>5.749</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>100</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.367</td>
+                    <td>1.044</td>
+                    <td>1.942</td>
+                    <td>3.159</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>100</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.053</td>
+                    <td>2.787</td>
+                    <td>6.438</td>
+                    <td>9.093</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.207</td>
+                    <td>0.421</td>
+                    <td>0.718</td>
+                    <td>2.444</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.194</td>
+                    <td>0.736</td>
+                    <td>1.792</td>
+                    <td>5.936</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>1,000</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.213</td>
+                    <td>0.470</td>
+                    <td>0.768</td>
+                    <td>4.810</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>1,000</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.140</td>
+                    <td>0.682</td>
+                    <td>1.555</td>
+                    <td>6.451</td>
+                    <td>0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Performance: 48M Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Connections</th>
+                    <th>Requests</th>
+                    <th>RPS</th>
+                    <th>Min (ms)</th>
+                    <th>P50 (ms)</th>
+                    <th>P95 (ms)</th>
+                    <th>Max (ms)</th>
+                    <th>Error (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.276</td>
+                    <td>0.820</td>
+                    <td>1.447</td>
+                    <td>5.611</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.209</td>
+                    <td>0.658</td>
+                    <td>1.497</td>
+                    <td>5.706</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>50</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.281</td>
+                    <td>0.823</td>
+                    <td>1.330</td>
+                    <td>2.058</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>50</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.049</td>
+                    <td>1.526</td>
+                    <td>3.590</td>
+                    <td>6.219</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>100</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.400</td>
+                    <td>1.306</td>
+                    <td>2.314</td>
+                    <td>3.320</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>100</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.315</td>
+                    <td>2.505</td>
+                    <td>6.102</td>
+                    <td>10.020</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.217</td>
+                    <td>0.460</td>
+                    <td>0.743</td>
+                    <td>3.549</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.162</td>
+                    <td>0.701</td>
+                    <td>1.674</td>
+                    <td>5.646</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>1,000</td>
+                    <td>2,000</td>
+                    <td>2,000</td>
+                    <td>0.230</td>
+                    <td>0.503</td>
+                    <td>0.826</td>
+                    <td>3.556</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>1,000</td>
+                    <td>10,000</td>
+                    <td>10,000</td>
+                    <td>0.204</td>
+                    <td>0.731</td>
+                    <td>1.771</td>
+                    <td>4.671</td>
+                    <td>0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section

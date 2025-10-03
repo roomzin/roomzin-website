@@ -2,101 +2,96 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roomzin - High-Performance Inventory Engine for Travel</title>
-    <link rel="stylesheet" href="styles/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roomzin - In-Memory Inventory Engine</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>Roomzin</h2>
-            </div>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="performance.html" class="nav-link">Performance</a>
-                <a href="technology.html" class="nav-link">Technology</a>
-                <a href="investors.html" class="nav-link">Investors</a>
-                <a href="documentation.html" class="nav-link">Documentation</a>
-            </div>
-        </div>
+  <header>
+    <nav>
+      <div class="logo">Roomzin</div>
+      <div>
+        <a href="index.html">Home</a>
+        <a href="investors.html">Investors</a>
+        <a href="technology.html">Technology</a>
+        <a href="benchmarks.html">Benchmarks</a>
+        <a href="docs.html">Docs</a>
+        <a href="tutorials.html">Tutorials</a>
+        <a href="contact.html">Contact</a>
+      </div>
     </nav>
+  </header>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">The Super Fast In-Memory Inventory Engine for Booking Platforms</h1>
-                <p class="hero-subtitle">Power your booking platform with lightning-fast searches, seamless availability
-                    updates, and effortless scaling — built specifically for the travel industry.</p>
-                <div class="hero-actions">
-                    <a href="performance.html" class="btn btn-primary">View Benchmarks</a>
-                    <a href="#contact" class="btn btn-secondary">Request Demo</a>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="hero">
+    <h1>🚀 Roomzin</h1>
+    <p>The super fast in-memory inventory engine for booking platforms</p>
+    <a href="investors.html" class="btn">For Investors</a>
+    <a href="benchmarks.html" class="btn">View Benchmarks</a>
+  </div>
 
-    <section class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>Purpose-Built for Booking Platforms</h2>
-                <p>Roomzin is not a generic cache or database. It is a specialized in-memory inventory engine, designed
-                    from the ground up for travel and hospitality companies.</p>
-            </div>
+  <section>
+    <h2>Why Roomzin</h2>
+    <p>Roomzin is not a generic cache or database. It is a <b>specialized in-memory inventory engine</b>, designed from
+      the ground up for travel and hospitality companies who need:</p>
+    <ul>
+      <li>Instant availability and pricing lookups</li>
+      <li>Reliable performance under massive search traffic</li>
+      <li>Efficient infrastructure with minimal resource consumption</li>
+    </ul>
+  </section>
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h3>🚀 High Performance</h3>
-                    <p>10,000 queries/sec sustained with zero errors and sub-3ms latency</p>
-                </div>
-                <div class="feature-card">
-                    <h3>📈 Massive Scalability</h3>
-                    <p>Handles 48M+ records with minimal resource consumption</p>
-                </div>
-                <div class="feature-card">
-                    <h3>💾 Efficient Memory</h3>
-                    <p>Only 2.5GB RAM for 48M records with compact disk storage</p>
-                </div>
-                <div class="feature-card">
-                    <h3>🔧 Easy Integration</h3>
-                    <p>Pre-built SDKs in Java, Go, Python, and C# with automatic cluster handling</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <section>
+    <h2>Key Capabilities</h2>
+    <p>Engineered specifically for the demands of booking platforms:</p>
+    <ul>
+      <li><b>Clustered & Standalone Modes</b>: From single-node to distributed clusters</li>
+      <li><b>Consensus & High Availability</b>: Raft-like consensus with snapshots and WAL</li>
+      <li><b>Auto Service Discovery</b>: Nodes find each other and recover automatically</li>
+      <li><b>QUIC Networking</b>: Secure, modern networking with TLS auto-rotation</li>
+      <li><b>Role-based Authentication</b>: Multi-tenant access control</li>
+      <li><b>Smart SDKs</b>: Java, Go, Python, and C# clients handle routing & failover</li>
+    </ul>
+  </section>
 
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Supercharge Your Booking Platform?</h2>
-                <p>Roomzin delivers speed, scale, and simplicity — purpose-built for the travel industry.</p>
-                <div class="cta-actions">
-                    <a href="investors.html" class="btn btn-primary">Learn More for Investors</a>
-                    <a href="documentation.html" class="btn btn-secondary">View Documentation</a>
-                </div>
-            </div>
-        </div>
-    </section>
+  <section>
+    <h2>Performance Highlights</h2>
+    <p>Benchmarked on a modest laptop (Intel i7, 16GB RAM):</p>
+    <ul>
+      <li><b>10,000 queries/sec sustained</b> with zero errors</li>
+      <li><b>Median latency under 3 ms</b> even with 48M records</li>
+      <li><b>Snapshot save</b>: under 1s for 48M records</li>
+      <li><b>Snapshot load</b>: under 5s for 48M records</li>
+      <li><b>Memory footprint</b>: only 2.5 GB for 48M records</li>
+    </ul>
+    <a href="benchmarks.html" class="btn">See Full Benchmark Report</a>
+  </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Roomzin</h3>
-                    <p>High-performance inventory engine for the travel industry</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p id="contact">contact@roomzin.com</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Roomzin. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+  <section>
+    <h2>Who It’s For</h2>
+    <p>Roomzin is tailored for companies where fast, reliable booking performance is business-critical:</p>
+    <ul>
+      <li>Online Travel Agencies (OTAs)</li>
+      <li>Global hotel chains</li>
+      <li>Wholesalers & aggregators</li>
+      <li>Regional booking platforms</li>
+      <li>Hospitality SaaS providers</li>
+    </ul>
+  </section>
+
+  <section style="text-align:center;">
+    <h2>Ready to supercharge your booking platform?</h2>
+    <p>Roomzin delivers <b>speed, scale, and simplicity</b> — purpose-built for the travel industry.</p>
+    <a href="contact.html" class="btn">Request a Demo</a>
+    <a href="docs.html" class="btn">Explore SDKs</a>
+  </section>
+
+  <footer>
+    <p>© 2025 Roomzin. All rights reserved.</p>
+  </footer>
+  <script src="js/script.js"></script>
 </body>
 
 </html>

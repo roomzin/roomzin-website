@@ -5,131 +5,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Technology - Roomzin</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>Roomzin</h2>
+    <header>
+        <nav>
+            <div class="logo">Roomzin</div>
+            <div>
+                <a href="index.html">Home</a>
+                <a href="investors.html">Investors</a>
+                <a href="technology.html" class="active">Technology</a>
+                <a href="benchmarks.html">Benchmarks</a>
+                <a href="docs.html">Docs</a>
+                <a href="tutorials.html">Tutorials</a>
+                <a href="contact.html">Contact</a>
             </div>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="performance.html" class="nav-link">Performance</a>
-                <a href="technology.html" class="nav-link active">Technology</a>
-                <a href="investors.html" class="nav-link">Investors</a>
-                <a href="documentation.html" class="nav-link">Documentation</a>
-            </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <section class="page-hero">
-        <div class="container">
-            <h1>Technology Architecture</h1>
-            <p>Built in Rust. Optimized for inventory. Proven at scale.</p>
-        </div>
+    <div class="hero">
+        <h1>Inside Roomzin</h1>
+        <p>A purpose-built in-memory engine, designed for performance, reliability, and scale.</p>
+    </div>
+
+    <section>
+        <h2>Architecture at a Glance</h2>
+        <p>Roomzin is more than a cache. It is a <b>distributed, in-memory inventory system</b> optimized for booking
+            flows.</p>
+        <ul>
+            <li><b>Clustered and Standalone Modes</b> — run a single node or scale horizontally.</li>
+            <li><b>Consensus & High Availability</b> — built-in Raft-style consensus, with write-ahead logs (WAL) and
+                snapshots.</li>
+            <li><b>Auto Service Discovery</b> — nodes automatically find and reconnect to the cluster.</li>
+            <li><b>QUIC Networking</b> — secure, modern transport layer with built-in TLS and auto certificate rotation.
+            </li>
+            <li><b>Role-based Authentication</b> — multi-tenant, fine-grained access control.</li>
+        </ul>
     </section>
 
-    <section class="content-section">
-        <div class="container">
-            <div class="architecture-overview">
-                <h2>Architecture Overview</h2>
-                <p>Roomzin is not a cache, and not a database — it's a partitioned in-memory inventory engine built for
-                    one job: serving travel availability and prices with ultra-low latency.</p>
-
-                <div class="architecture-grid">
-                    <div class="arch-feature">
-                        <h3>Partitioned State Machine</h3>
-                        <p>Each shard handles properties independently, scaling horizontally across cores and nodes</p>
-                    </div>
-                    <div class="arch-feature">
-                        <h3>Snapshots + WAL</h3>
-                        <p>Fast state recovery and durability with compact snapshots and minimal write-ahead logging</p>
-                    </div>
-                    <div class="arch-feature">
-                        <h3>Smart SDKs</h3>
-                        <p>Client SDKs handle routing, retries, and peer updates automatically</p>
-                    </div>
-                    <div class="arch-feature">
-                        <h3>QUIC + TLS Security</h3>
-                        <p>Lightweight, secure transport optimized for low latency at the edge</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sdk-section">
-                <h2>Developer Experience</h2>
-                <div class="sdk-content">
-                    <p>Developers don't need to think about nodes, peers, or routing. The SDK takes care of it
-                        automatically:</p>
-                    <ul>
-                        <li>Provide a single endpoint, and the SDK keeps itself updated with cluster topology</li>
-                        <li>Predefined models ensure clean, predictable API interactions</li>
-                        <li>REST API available for management, health checks, metrics, and node info</li>
-                    </ul>
-                    <p class="highlight-text">Integration time is measured in hours, not weeks.</p>
-                </div>
-            </div>
-
-            <div class="rust-section">
-                <h2>Why Rust?</h2>
-                <div class="rust-benefits">
-                    <div class="benefit">
-                        <h4>Memory Safety</h4>
-                        <p>Without garbage collection overhead</p>
-                    </div>
-                    <div class="benefit">
-                        <h4>High Performance</h4>
-                        <p>Predictable latencies with modern async capabilities</p>
-                    </div>
-                    <div class="benefit">
-                        <h4>Concurrent Workloads</h4>
-                        <p>Optimized for high-concurrency scenarios</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="capabilities-section">
-                <h2>Key Capabilities</h2>
-                <div class="capabilities-grid">
-                    <div class="capability">
-                        <h4>Clustered & Standalone Modes</h4>
-                        <p>Scale flexibly from single-node deployments to large distributed clusters</p>
-                    </div>
-                    <div class="capability">
-                        <h4>Consensus & High Availability</h4>
-                        <p>Simple Raft-like consensus with snapshots and WAL ensures consistency</p>
-                    </div>
-                    <div class="capability">
-                        <h4>Auto Service Discovery</h4>
-                        <p>Nodes find each other, elect leaders, and transfer snapshots automatically</p>
-                    </div>
-                    <div class="capability">
-                        <h4>Role-based Authentication</h4>
-                        <p>Fine-grained access control for multi-tenant environments</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section>
+        <h2>SDKs that Do the Heavy Lifting</h2>
+        <p>Developers don’t need to worry about cluster topology. Roomzin’s SDKs handle:</p>
+        <ul>
+            <li>Automatic routing to the right node</li>
+            <li>Failover and retry logic</li>
+            <li>Load balancing across cluster nodes</li>
+            <li>Connection pooling and efficient multiplexing</li>
+        </ul>
+        <p>Available SDKs: <b>Java, Go, Python, C#</b></p>
+        <a href="docs.html" class="btn">Explore SDKs</a>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Roomzin</h3>
-                    <p>High-performance inventory engine for the travel industry</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>contact@roomzin.com</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Roomzin. All rights reserved.</p>
-            </div>
-        </div>
+    <section>
+        <h2>Why Rust?</h2>
+        <p>Roomzin is implemented in <b>Rust</b>, a systems language that combines performance and safety:</p>
+        <ul>
+            <li><b>Memory Safety</b> — eliminates whole classes of bugs (no segfaults, no data races).</li>
+            <li><b>Performance</b> — on par with C/C++, with zero-cost abstractions.</li>
+            <li><b>Reliability</b> — ensures predictable behavior under load.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Performance Highlights</h2>
+        <p>Benchmarks confirm that Roomzin delivers unmatched efficiency:</p>
+        <ul>
+            <li><b>10,000+ queries/sec</b> with sub-3ms median latency</li>
+            <li><b>Snapshot save</b> in under 1 second for 48M records</li>
+            <li><b>Snapshot load</b> in under 5 seconds for 48M records</li>
+            <li><b>Lean footprint</b>: 2.5 GB RAM for 48M records</li>
+        </ul>
+        <a href="benchmarks.html" class="btn">See Full Benchmarks</a>
+    </section>
+
+    <footer>
+        <p>© 2025 Roomzin. All rights reserved.</p>
     </footer>
 </body>
 
