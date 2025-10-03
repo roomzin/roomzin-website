@@ -15,12 +15,8 @@
             <div class="logo">Roomzin</div>
             <div>
                 <a href="index.html">Home</a>
-                <a href="investors.html">Investors</a>
-                <a href="technology.html">Technology</a>
-                <a href="benchmarks.html">Benchmarks</a>
+                <a href="performance.html">Benchmarks</a>
                 <a href="docs.html" class="active">Docs</a>
-                <a href="tutorials.html">Tutorials</a>
-                <a href="contact.html">Contact</a>
             </div>
         </nav>
     </header>
@@ -30,80 +26,15 @@
         <p>Reference guide for installation, configuration, APIs, and SDKs.</p>
     </div>
 
-    <section>
-        <h2>1. Installation</h2>
-        <p>Download the latest release from GitHub and run the binary:</p>
-        <pre><code>curl -L https://github.com/roomzin/releases/latest/download/roomzin.tar.gz | tar xz
-cd roomzin
-./roomzin --help</code></pre>
-        <p>Supported platforms: Linux, macOS. Windows builds available on request.</p>
-    </section>
-
-    <section>
-        <h2>2. Configuration</h2>
-        <p>Roomzin can be configured via a YAML file or environment variables.</p>
-        <pre><code>server:
-  id: node-1
-  port: 8080
-  data_dir: /var/lib/roomzin
-
-cluster:
-  peers:
-    - http://node-1:8080
-    - http://node-2:8080
-    - http://node-3:8080
-
-security:
-  enable_tls: true
-  cert_file: /etc/roomzin/cert.pem
-  key_file: /etc/roomzin/key.pem
-</code></pre>
-        <p>Minimal configuration requires only a <code>server.id</code> and <code>port</code>.</p>
-    </section>
-
-    <section>
-        <h2>3. Cluster Setup</h2>
-        <p>Roomzin supports both standalone and clustered deployments.</p>
-        <ul>
-            <li><b>Standalone</b>: start a single node with <code>./roomzin --standalone</code>.</li>
-            <li><b>Clustered</b>: launch multiple nodes with shared peer addresses. The cluster elects a leader
-                automatically.</li>
-        </ul>
-        <p>Clusters use a Raft-like consensus mechanism with snapshots and WAL for consistency.</p>
-    </section>
-
-    <section>
-        <h2>4. Admin API</h2>
-        <p>The Admin API is available on every node for health checks, metrics, and cluster management.</p>
-        <pre><code>GET /admin/health     → {"status":"ok"}
-GET /admin/metrics    → Prometheus-compatible metrics
-GET /admin/peers      → List cluster peers
-POST /admin/snapshot  → Trigger snapshot save
-</code></pre>
-        <p>All endpoints require authentication if security is enabled.</p>
-    </section>
-
-    <section>
-        <h2>5. SDKs Overview</h2>
-        <p>Official SDKs handle cluster routing, retries, and failover automatically:</p>
-        <ul>
-            <li><b>Java SDK</b>: <code>rz-java</code></li>
-            <li><b>Go SDK</b>: <code>rz-go</code></li>
-            <li><b>Python SDK</b>: <code>rz-py</code></li>
-            <li><b>.NET SDK</b>: <code>rz-dotnet</code></li>
-        </ul>
-        <p>Each SDK provides:</p>
-        <ul>
-            <li>Cluster discovery</li>
-            <li>Automatic retries</li>
-            <li>High-level query API</li>
-        </ul>
-        <p>See <a href="tutorials.html">Tutorials</a> for integration examples in each language.</p>
-    </section>
-
     <footer>
+        <section style="text-align:center;">
+            <h2>Ready to supercharge your booking platform?</h2>
+            <p>Roomzin delivers <b>speed, scale, and simplicity</b> — purpose-built for the travel industry.</p>
+        </section>
         <p>© 2025 Roomzin. All rights reserved.</p>
     </footer>
+    <script src="js/script.js"></script>
+
 </body>
 
 </html>

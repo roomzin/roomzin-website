@@ -15,12 +15,8 @@
       <div class="logo">Roomzin</div>
       <div>
         <a href="index.html">Home</a>
-        <a href="investors.html">Investors</a>
-        <a href="technology.html">Technology</a>
-        <a href="benchmarks.html">Benchmarks</a>
+        <a href="performance.html">Benchmarks</a>
         <a href="docs.html">Docs</a>
-        <a href="tutorials.html">Tutorials</a>
-        <a href="contact.html">Contact</a>
       </div>
     </nav>
   </header>
@@ -28,8 +24,6 @@
   <div class="hero">
     <h1>🚀 Roomzin</h1>
     <p>The super fast in-memory inventory engine for booking platforms</p>
-    <a href="investors.html" class="btn">For Investors</a>
-    <a href="benchmarks.html" class="btn">View Benchmarks</a>
   </div>
 
   <section>
@@ -66,7 +60,7 @@
       <li><b>Snapshot load</b>: under 5s for 48M records</li>
       <li><b>Memory footprint</b>: only 2.5 GB for 48M records</li>
     </ul>
-    <a href="benchmarks.html" class="btn">See Full Benchmark Report</a>
+    <a href="performance.html">See Full Benchmark Report</a>
   </section>
 
   <section>
@@ -81,14 +75,52 @@
     </ul>
   </section>
 
-  <section style="text-align:center;">
-    <h2>Ready to supercharge your booking platform?</h2>
-    <p>Roomzin delivers <b>speed, scale, and simplicity</b> — purpose-built for the travel industry.</p>
-    <a href="contact.html" class="btn">Request a Demo</a>
-    <a href="docs.html" class="btn">Explore SDKs</a>
+
+  <section>
+    <div>
+      <h1>Inside Roomzin</h1>
+      <p>A purpose-built in-memory engine, designed for performance, reliability, and scale.</p>
+    </div>
+    <hr />
+    <h2>Architecture at a Glance</h2>
+    <p>Roomzin is more than a cache. It is a <b>distributed, in-memory inventory system</b> optimized for booking
+      flows.</p>
+    <section>
+      <p>Roomzin is implemented in <b>Rust</b>, a systems language that combines performance and safety:</p>
+      <ul>
+        <li><b>Memory Safety</b> — eliminates whole classes of bugs (no segfaults, no data races).</li>
+        <li><b>Performance</b> — on par with C/C++, with zero-cost abstractions.</li>
+        <li><b>Reliability</b> — ensures predictable behavior under load.</li>
+      </ul>
+    </section>
+    <ul>
+      <li><b>Clustered and Standalone Modes</b> — run a single node or scale horizontally.</li>
+      <li><b>Consensus & High Availability</b> — built-in Raft-style consensus, with write-ahead logs (WAL) and
+        snapshots.</li>
+      <li><b>Auto Service Discovery</b> — nodes automatically find and reconnect to the cluster.</li>
+      <li><b>QUIC Networking</b> — secure, modern transport layer with built-in TLS and auto certificate rotation.
+      </li>
+      <li><b>Role-based Authentication</b> — multi-tenant, fine-grained access control.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>SDKs that Do the Heavy Lifting</h2>
+    <p>Developers don’t need to worry about cluster topology. Roomzin’s SDKs handle:</p>
+    <ul>
+      <li>Automatic routing to the right node</li>
+      <li>Failover and retry logic</li>
+      <li>Load balancing across cluster nodes</li>
+      <li>Connection pooling and efficient multiplexing</li>
+    </ul>
+    <p>Available SDKs: <b>Java, Go, Python, C#</b></p>
   </section>
 
   <footer>
+    <section style="text-align:center;">
+      <h2>Ready to supercharge your booking platform?</h2>
+      <p>Roomzin delivers <b>speed, scale, and simplicity</b> — purpose-built for the travel industry.</p>
+    </section>
     <p>© 2025 Roomzin. All rights reserved.</p>
   </footer>
   <script src="js/script.js"></script>
