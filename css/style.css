@@ -21,6 +21,7 @@ header nav {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+    border-bottom: 3px solid #c6e356;
 }
 
 header nav a {
@@ -96,12 +97,29 @@ footer {
 section {
     background: transparent !important;
     box-shadow: none !important;
-    border-top: 1px solid #ddd !important;
+    /* border-top: 1px solid #ddd !important; */
     line-height: 1.8em !important;
     border-bottom: 1px solid #ddd !important;
 }
 
 .hdrdiv {
-    background: #94cbf1 !important;
+    background: #fff !important;
     color: rgb(55 65 118) !important;
+    font-family: 'Comfortaa';
+}
+
+p,
+li {
+    font-size: 13pt;
+}
+
+li {
+    font-size: 13pt;
+    border-bottom: 1px solid #dcdfeb;
+    line-height: 2.2em;
+}
+
+.sub-title {
+    font-family: 'Comfortaa';
+    color: #4b66cb !important;
 }

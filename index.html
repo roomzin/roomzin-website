@@ -6,14 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roomzin - In-Memory Inventory Engine</title>
   <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 font-['Inter']">
-  <header class="bg-white shadow">
+  <header class="bg-white">
     <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <div class="logo text-2xl font-semibold">Roomzin</div>
+      <div class="logo text-2xl font-semibold">
+        <img src="logo.png" style="margin: auto; width: 200px;" />
+      </div>
       <div class="space-x-4">
         <a href="index.html" class="text-gray-900 font-semibold hover:text-blue-600">Home</a>
         <a href="performance.html" class="text-gray-600 hover:text-blue-600">Benchmarks</a>
@@ -23,14 +28,14 @@
   </header>
 
   <div class="hero bg-blue-600 text-white text-center py-12 hdrdiv">
-    <h1 class="text-4xl font-bold">Roomzin</h1>
+    <img src="roomzin.png" style="margin: auto; width: 200px;" />
     <p class="text-lg mt-2">The super fast in-memory inventory engine for booking platforms</p>
   </div>
 
   <div class="container mx-auto px-4 py-8">
     <section class="mb-12 bg-white shadow rounded-lg p-6">
       <h2 class="text-2xl font-semibold mb-4">About Roomzin</h2>
-      <p class="text-lg mb-4">An Optimized Product for Booking Searches</p>
+      <p class="text-lg mb-4 sub-title">An Optimized Product for Booking Searches</p>
       <hr class="border-gray-300 mb-4" />
       <p class="mb-4">Roomzin is not a generic cache or database. It is a <b>specialized in-memory inventory engine</b>,
         designed from the ground up for travel and hospitality companies who need:</p>
@@ -63,7 +68,7 @@
 
     <section class="mb-12 bg-white shadow rounded-lg p-6">
       <h2 class="text-2xl font-semibold mb-4">Key Capabilities</h2>
-      <p class="text-lg mb-4">Engineered specifically for the demands of booking platforms:</p>
+      <p class="text-lg mb-4 sub-title">Engineered specifically for the demands of booking platforms:</p>
       <hr class="border-gray-300 mb-4" />
       <ul class="list-disc pl-6 mb-4">
         <li><b>Clustered & Standalone Modes</b>: From single-node to distributed clusters</li>
@@ -81,23 +86,10 @@
       </ul>
     </section>
 
-    <section class="mb-12 bg-white shadow rounded-lg p-6">
-      <h2 class="text-2xl font-semibold mb-4">Who It’s For</h2>
-      <p class="text-lg mb-4">Roomzin is tailored for companies where fast, reliable booking performance is
-        business-critical:</p>
-      <hr class="border-gray-300 mb-4" />
-      <ul class="list-disc pl-6 mb-4">
-        <li>Online Travel Agencies (OTAs)</li>
-        <li>Global hotel chains</li>
-        <li>Wholesalers & aggregators</li>
-        <li>Regional booking platforms</li>
-        <li>Hospitality SaaS providers</li>
-      </ul>
-    </section>
 
     <section class="mb-12 bg-white shadow rounded-lg p-6">
       <h2 class="text-2xl font-semibold mb-4">Easy Integration</h2>
-      <p class="text-lg mb-4">SDKs Do the Heavy Lifting</p>
+      <p class="text-lg mb-4 sub-title">SDKs Do the Heavy Lifting</p>
       <hr class="border-gray-300 mb-4" />
       <p class="mb-4">Developers don’t need to worry about cluster topology. Roomzin’s SDKs handle:</p>
       <ul class="list-disc pl-6 mb-4">
@@ -107,6 +99,20 @@
         <li>Connection pooling and efficient multiplexing</li>
       </ul>
       <p>Available SDKs: <b>Java, Go, Python, C#</b></p>
+    </section>
+
+    <section class="mb-12 bg-white shadow rounded-lg p-6">
+      <h2 class="text-2xl font-semibold mb-4">Who It’s For</h2>
+      <p class="text-lg mb-4 sub-title">Roomzin is tailored for companies where fast, reliable booking performance is
+        business-critical:</p>
+      <hr class="border-gray-300 mb-4" />
+      <ul class="list-disc pl-6 mb-4">
+        <li>Online Travel Agencies (OTAs)</li>
+        <li>Global hotel chains</li>
+        <li>Wholesalers & aggregators</li>
+        <li>Regional booking platforms</li>
+        <li>Hospitality SaaS providers</li>
+      </ul>
     </section>
 
     <section class="mb-12 bg-blue-600 text-white text-center py-8 rounded-lg">
