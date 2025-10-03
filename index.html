@@ -22,12 +22,14 @@
   </header>
 
   <div class="hero">
-    <h1>🚀 Roomzin</h1>
+    <h1>Roomzin</h1>
     <p>The super fast in-memory inventory engine for booking platforms</p>
   </div>
 
   <section>
-    <h2>Why Roomzin</h2>
+    <h2>About Roomzin</h2>
+    <p>An Optimized product for Booking Searches</p>
+    <hr />
     <p>Roomzin is not a generic cache or database. It is a <b>specialized in-memory inventory engine</b>, designed from
       the ground up for travel and hospitality companies who need:</p>
     <ul>
@@ -35,37 +37,59 @@
       <li>Reliable performance under massive search traffic</li>
       <li>Efficient infrastructure with minimal resource consumption</li>
     </ul>
+
+    <p>
+      Unlike generic caches that need multiple lookups and joins, Roomzin keeps
+      <b>properties, room types, availability, and prices</b> hot in memory for the
+      next hot interval like <b>15–60 days</b> or more based on the needs.
+      This means <b>95% of user searches</b>—location, hotel info, date ranges,
+      price filters, and cancellation rules—are answered in <b>one fast query</b>,
+      with no round-trips or in-memory joins.
+    </p>
+    <p>Everything is out of the box and dev teams do not need to worry about designing schema and expiry times</p>
   </section>
 
-  <section>
-    <h2>Key Capabilities</h2>
-    <p>Engineered specifically for the demands of booking platforms:</p>
-    <ul>
-      <li><b>Clustered & Standalone Modes</b>: From single-node to distributed clusters</li>
-      <li><b>Consensus & High Availability</b>: Raft-like consensus with snapshots and WAL</li>
-      <li><b>Auto Service Discovery</b>: Nodes find each other and recover automatically</li>
-      <li><b>QUIC Networking</b>: Secure, modern networking with TLS auto-rotation</li>
-      <li><b>Role-based Authentication</b>: Multi-tenant access control</li>
-      <li><b>Smart SDKs</b>: Java, Go, Python, and C# clients handle routing & failover</li>
-    </ul>
-  </section>
 
   <section>
     <h2>Performance Highlights</h2>
-    <p>Benchmarked on a modest laptop (Intel i7, 16GB RAM):</p>
+    <hr />
     <ul>
-      <li><b>10,000 queries/sec sustained</b> with zero errors</li>
-      <li><b>Median latency under 3 ms</b> even with 48M records</li>
-      <li><b>Snapshot save</b>: under 1s for 48M records</li>
-      <li><b>Snapshot load</b>: under 5s for 48M records</li>
-      <li><b>Memory footprint</b>: only 2.5 GB for 48M records</li>
+      <li><b>Resilient and predictable</b> with different number of connections, traffic and data sizes</li>
+      <li><b>Few ms Median latency</b> even with millions of records</li>
+      <li><b>Super fast snapshot save</b>: like under 1s for 48M records</li>
+      <li><b>Low snapshot size</b>: like under 700MB for 4.6GB of data</li>
+      <li><b>Fast load time</b>: like under 5s for 48M records on a laptop </li>
+      <li><b>Low memory footprint</b>: like only 2.5 GB for 4.6GB of data including 48M records</li>
+      <li><b>Predictable performance</b> with different data sizes</li>
     </ul>
     <a href="performance.html">See Full Benchmark Report</a>
   </section>
 
   <section>
+    <h2>Key Capabilities</h2>
+    <p>Engineered specifically for the demands of booking platforms:</p>
+    <hr />
+    <ul>
+      <li><b>Clustered & Standalone Modes</b>: From single-node to distributed clusters</li>
+      <li><b>Leader/follower cluster architecture</b></li>
+      <li><b>Consensus & High Availability</b>: Raft-like consensus with snapshots and WAL</li>
+      <li><b>Auto Service Discovery</b>: Nodes find each other and recover automatically</li>
+      <li><b>Auto Join</b>: Nodes catchup with the leader automatically</li>
+      <li><b>QUIC Networking</b>: Secure, modern networking with TLS auto-rotation</li>
+      <li><b>Role-based Authentication</b>: Multi-level access control</li>
+      <li><b>Realtime Metrics</b></li>
+      <li><b>Fast API for node and cluster checks and admin operations</b></li>
+      <li><b>Partitioning</b>: Partition your data into segments for faster concurrent processing</li>
+      <li><b>Saving snapshot under the load in clustered mode</b></li>
+      <li><b>Smart SDKs</b>: Java, Go, Python, and C# clients handle routing & failover</li>
+
+    </ul>
+  </section>
+
+  <section>
     <h2>Who It’s For</h2>
     <p>Roomzin is tailored for companies where fast, reliable booking performance is business-critical:</p>
+    <hr />
     <ul>
       <li>Online Travel Agencies (OTAs)</li>
       <li>Global hotel chains</li>
@@ -75,37 +99,10 @@
     </ul>
   </section>
 
-
   <section>
-    <div>
-      <h1>Inside Roomzin</h1>
-      <p>A purpose-built in-memory engine, designed for performance, reliability, and scale.</p>
-    </div>
+    <h2>Easy Integration</h2>
+    <p>SDKs Do the Heavy Lifting</p>
     <hr />
-    <h2>Architecture at a Glance</h2>
-    <p>Roomzin is more than a cache. It is a <b>distributed, in-memory inventory system</b> optimized for booking
-      flows.</p>
-    <section>
-      <p>Roomzin is implemented in <b>Rust</b>, a systems language that combines performance and safety:</p>
-      <ul>
-        <li><b>Memory Safety</b> — eliminates whole classes of bugs (no segfaults, no data races).</li>
-        <li><b>Performance</b> — on par with C/C++, with zero-cost abstractions.</li>
-        <li><b>Reliability</b> — ensures predictable behavior under load.</li>
-      </ul>
-    </section>
-    <ul>
-      <li><b>Clustered and Standalone Modes</b> — run a single node or scale horizontally.</li>
-      <li><b>Consensus & High Availability</b> — built-in Raft-style consensus, with write-ahead logs (WAL) and
-        snapshots.</li>
-      <li><b>Auto Service Discovery</b> — nodes automatically find and reconnect to the cluster.</li>
-      <li><b>QUIC Networking</b> — secure, modern transport layer with built-in TLS and auto certificate rotation.
-      </li>
-      <li><b>Role-based Authentication</b> — multi-tenant, fine-grained access control.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>SDKs that Do the Heavy Lifting</h2>
     <p>Developers don’t need to worry about cluster topology. Roomzin’s SDKs handle:</p>
     <ul>
       <li>Automatic routing to the right node</li>
