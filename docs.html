@@ -422,19 +422,1697 @@ prop_1,room_1,2025-10-03,7,120,free_cancellation|non_refundable|pay_at_property|
         <section class="mb-12 bg-white shadow rounded-lg p-6">
             <h2 class="text-2xl font-semibold mb-4">SDK Integration</h2>
             <hr class="border-gray-300 mb-4" />
-            <p class="mb-4">Roomzin provides SDKs in Java, Go, Python, and C# for querying the inventory engine over
-                TCP. SDKs handle:</p>
-            <ul class="list-disc pl-6 mb-4">
-                <li>Automatic routing to the correct node in clusters.</li>
-                <li>Failover and retry logic.</li>
-                <li>Load balancing across nodes.</li>
-                <li>Connection pooling and multiplexing.</li>
-            </ul>
-            <p class="mb-4">Contact support for SDK downloads and detailed documentation. Example (Python SDK):</p>
-            <pre class="bg-gray-800 text-white p-4 rounded"><code>from roomzin import RoomzinClient
-client = RoomzinClient(endpoint="127.0.0.1:7777")
-results = client.query_availability(location="NYC", checkin="2025-11-01", checkout="2025-11-03", max_days=7)
+            <p class="mb-4">Roomzin provides SDKs in Go, Java, Python, and C# for querying and managing the in-memory
+                inventory engine over TCP. SDKs handle automatic routing, failover, load balancing, and connection
+                pooling. Select an SDK below to view its documentation.</p>
+            <div class="mb-4">
+                <ul class="flex border-b border-gray-200">
+                    <li class="mr-1">
+                        <button class="tab-button px-4 py-2 font-semibold text-gray-600 hover:text-blue-600 active-tab"
+                            data-tab="go-sdk">Go SDK</button>
+                    </li>
+                    <li class="mr-1">
+                        <button class="tab-button px-4 py-2 font-semibold text-gray-600 hover:text-blue-600"
+                            data-tab="java-sdk">Java SDK</button>
+                    </li>
+                    <li class="mr-1">
+                        <button class="tab-button px-4 py-2 font-semibold text-gray-600 hover:text-blue-600"
+                            data-tab="python-sdk">Python SDK</button>
+                    </li>
+                    <li class="mr-1">
+                        <button class="tab-button px-4 py-2 font-semibold text-gray-600 hover:text-blue-600"
+                            data-tab="csharp-sdk">C# SDK</button>
+                    </li>
+                </ul>
+            </div>
+            <div id="go-sdk" class="tab-content">
+                <h3 class="text-xl font-semibold mb-2">Go SDK</h3>
+                <p class="mb-4">The Go SDK provides a robust interface for interacting with Roomzin in both standalone
+                    and clustered modes. It supports property management, availability queries, and administrative
+                    tasks. The SDK is available via a provided package; contact support for access.</p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Install the SDK by importing the necessary packages. The public packages are
+                    <code>github.com/roomzin/roomzin-go/api</code>, <code>github.com/roomzin/roomzin-go/single</code>,
+                    <code>github.com/roomzin/roomzin-go/cluster</code>, and
+                    <code>github.com/roomzin/roomzin-go/types</code>. The <code>internal</code> package is not exposed
+                    to users.
+                </p>
+                <pre class="bg-gray-800 text-white p-4 rounded"><code>import (
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/cluster"
+    "github.com/roomzin/roomzin-go/types"
+)
 </code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective configuration
+                    builders. Required fields include host, TCP port, and authentication token (see Authentication
+                    section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto"><code>package main
+
+import (
+    "time"
+    "github.com/roomzin/roomzin-go/single"
+)
+
+func GetClient() (api.CacheClientAPI, error) {
+    cfg, err := single.NewConfigBuilder().
+        WithHost("127.0.0.1").
+        WithTCPPort(7777).
+        WithToken("abc123").
+        WithTimeout(5 * time.Second).
+        WithKeepAlive(30 * time.Second).
+        Build()
+    if err != nil {
+        return nil, err
+    }
+    return single.New(&cfg)
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>Host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>TCPPort</code>: TCP port for queries (required, default: 7777).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto"><code>package main
+
+import (
+    "time"
+    "github.com/roomzin/roomzin-go/cluster"
+)
+
+func GetClient() (api.CacheClientAPI, error) {
+    cfg, err := cluster.NewConfigBuilder().
+        WithSeedHosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost").
+        WithTCPPort(7777).
+        WithAPIPort(8080).
+        WithToken("admin-token-123").
+        WithTimeout(30 * time.Second).
+        WithKeepAlive(30 * time.Second).
+        Build()
+    if err != nil {
+        return nil, err
+    }
+    return cluster.New(&cfg)
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SeedHosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>TCPPort</code>: TCP port for queries (required, default: 7777).</li>
+                    <li><code>APIPort</code>: HTTP port for admin API (required, e.g., 8080).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                    <li><code>MaxActiveConns</code>: Maximum open TCP connections (optional).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>CacheClientAPI</code> interface provides methods for managing properties,
+                    querying availability, and administrative tasks. All methods require appropriate authentication
+                    roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full bg-white shadow rounded-lg">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                                <th class="px-4 py-2 text-left">Required Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SetProp</code></td>
+                                <td class="border px-4 py-2">Add or update a property</td>
+                                <td class="border px-4 py-2"><code>SetPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SearchProp</code></td>
+                                <td class="border px-4 py-2">Search properties by segment, area, type, etc.</td>
+                                <td class="border px-4 py-2"><code>SearchPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>[]string, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SearchAvail</code></td>
+                                <td class="border px-4 py-2">Search available rooms by criteria</td>
+                                <td class="border px-4 py-2"><code>SearchAvailPayload</code></td>
+                                <td class="border px-4 py-2"><code>[]PropertyAvail, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SetRoomPkg</code></td>
+                                <td class="border px-4 py-2">Set room availability, price, and rate cancellation</td>
+                                <td class="border px-4 py-2"><code>SetRoomPkgPayload</code></td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SetRoomAvl</code></td>
+                                <td class="border px-4 py-2">Set room availability for a date</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>uint8, error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>IncRoomAvl</code></td>
+                                <td class="border px-4 py-2">Increment room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>uint8, error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DecRoomAvl</code></td>
+                                <td class="border px-4 py-2">Decrement room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>uint8, error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropExist</code></td>
+                                <td class="border px-4 py-2">Check if a property exists</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>bool, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropRoomExist</code></td>
+                                <td class="border px-4 py-2">Check if a room type exists for a property</td>
+                                <td class="border px-4 py-2"><code>PropRoomExistPayload</code></td>
+                                <td class="border px-4 py-2"><code>bool, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropRoomList</code></td>
+                                <td class="border px-4 py-2">List room types for a property</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>[]string, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropRoomDateList</code></td>
+                                <td class="border px-4 py-2">List dates with availability for a room type</td>
+                                <td class="border px-4 py-2"><code>PropRoomDateListPayload</code></td>
+                                <td class="border px-4 py-2"><code>[]string, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelProp</code></td>
+                                <td class="border px-4 py-2">Delete a property</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelSegment</code></td>
+                                <td class="border px-4 py-2">Delete all properties in a segment</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelPropDay</code></td>
+                                <td class="border px-4 py-2">Delete all room data for a property on a date</td>
+                                <td class="border px-4 py-2"><code>DelPropDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelPropRoom</code></td>
+                                <td class="border px-4 py-2">Delete a room type from a property</td>
+                                <td class="border px-4 py-2"><code>DelPropRoomPayload</code></td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelRoomDay</code></td>
+                                <td class="border px-4 py-2">Delete a room’s data for a specific date</td>
+                                <td class="border px-4 py-2"><code>DelRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>GetPropRoomDay</code></td>
+                                <td class="border px-4 py-2">Get room details for a specific date</td>
+                                <td class="border px-4 py-2"><code>GetRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>GetRoomDayResult, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>GetSegments</code></td>
+                                <td class="border px-4 py-2">List all segments and their property counts</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>[]SegmentInfo, error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SaveSnapshot</code></td>
+                                <td class="border px-4 py-2">Save current data to a snapshot</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>Close</code></td>
+                                <td class="border px-4 py-2">Close the client connection</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>error</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>types</code> package. Key types include:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (Segment, Area, PropertyID, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (Segment, Area, Amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (Segment, RoomType, Date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>PropertyID</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000") or
+                        ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>Date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>Amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>RateCancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>RoomType</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+                <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+                <p class="mb-4">Below are examples of the most commonly used Go SDK methods for managing properties and
+                    querying availability.</p>
+                <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+                <p class="mb-4">Add or update a property using <code>SetProp</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>package main
+
+import (
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    err = client.SetProp(types.SetPropPayload{
+        Segment:      "NorthAmerica-East",
+        Area:         "New York",
+        PropertyID:   "550e8400-e29b-41d4-a716-446655440000",
+        PropertyType: "hotel",
+        Category:     "luxury",
+        Stars:        4,
+        Latitude:     40.7138,
+        Longitude:    -74.0050,
+        Amenities:    []string{"wifi", "pool", "gym"},
+    })
+    if err != nil {
+        panic(err)
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+                <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                    <code>SetRoomPkg</code>.
+                </p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>package main
+
+import (
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    avail := uint8(10)
+    price := uint32(150)
+    err = client.SetRoomPkg(types.SetRoomPkgPayload{
+        PropertyID:   "prop_1",
+        RoomType:     "single",
+        Date:         "2025-10-05",
+        Availability: &avail,
+        FinalPrice:   &price,
+        RateCancel:   []string{"free_cancellation", "pay_at_property"},
+    })
+    if err != nil {
+        panic(err)
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+                <p class="mb-4">Reduce room availability for a specific date using <code>DecRoomAvl</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>package main
+
+import (
+    "fmt"
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    newAvail, err := client.DecRoomAvl(types.UpdRoomAvlPayload{
+        PropertyID: "prop_1",
+        RoomType:   "single",
+        Date:       "2025-10-05",
+        Amount:     1,
+    })
+    if err != nil {
+        panic(err)
+    }
+    fmt.Printf("New availability: %d\n", newAvail)
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+                <p class="mb-4">Search for available rooms by criteria using <code>SearchAvail</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>package main
+
+import (
+    "fmt"
+    "github.com/roomzin/roomzin-go/api"
+    "github.com/roomzin/roomzin-go/single"
+    "github.com/roomzin/roomzin-go/types"
+)
+
+func main() {
+    client, err := single.New(&single.Config{
+        Host:      "127.0.0.1",
+        TCPPort:   7777,
+        AuthToken: "abc123",
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer client.Close()
+
+    var limit uint64 = 100
+    results, err := client.SearchAvail(types.SearchAvailPayload{
+        Segment:    "NorthAmerica-East",
+        RoomType:   "single",
+        Date:       []string{"2025-10-05", "2025-10-06"},
+        Amenities:  []string{"wifi"},
+        RateCancel: []string{"free_cancellation"},
+        Limit:      &limit,
+    })
+    if err != nil {
+        panic(err)
+    }
+    for _, prop := range results {
+        fmt.Printf("Property: %s\n", prop.PropertyID)
+        for _, day := range prop.Days {
+            fmt.Printf("  Date: %s, Avail: %d, Price: %d\n", day.Date, day.Availability, day.FinalPrice)
+        }
+    }
+}
+</code></pre>
+            </div>
+            <div id="java-sdk" class="tab-content hidden">
+                <h3 class="text-xl font-semibold mb-2">Java SDK</h3>
+                <p class="mb-4">The Java SDK provides a robust interface for interacting with Roomzin in both standalone
+                    and clustered modes. It supports property management, availability queries, and administrative
+                    tasks. The SDK is available via a provided Maven package; contact support for access.</p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Add the SDK to your Maven project via <code>pom.xml</code>. The public packages are
+                    <code>com.roomzin.roomzinjava.api</code>, <code>com.roomzin.roomzinjava.client.single</code>,
+                    <code>com.roomzin.roomzinjava.client.cluster</code>, and <code>com.roomzin.roomzinjava.types</code>.
+                    The <code>internal</code> package is not exposed to users.
+                </p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.roomzin&lt;/groupId&gt;
+    &lt;artifactId&gt;roomzin-java-sdk&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.client.cluster.ClusterConfig;
+import com.roomzin.roomzinjava.types.*;
+</code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective builder
+                    patterns. Required fields include host, TCP port, and authentication token (see Authentication
+                    section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>import java.time.Duration;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+
+SingleConfig config = SingleConfig.builder()
+    .withHost("127.0.0.1")
+    .withTcpPort(7777)
+    .withAuthToken("abc123")
+    .withTimeout(Duration.ofSeconds(5))
+    .build();
+
+try (CacheClientApi client = new SingleClient(config)) {
+    // Use client
+} catch (Exception e) {
+    // Handle error
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>tcpPort</code>: TCP port for queries (required, default: 9999).</li>
+                    <li><code>authToken</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>timeout</code>: Request timeout (default: 2s).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>import java.time.Duration;
+import com.roomzin.roomzinjava.client.cluster.ClusterConfig;
+import com.roomzin.roomzinjava.client.cluster.ClusterClient;
+
+ClusterConfig config = ClusterConfig.builder()
+    .withSeedHosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost")
+    .withTcpPort(7777)
+    .withApiPort(8080)
+    .withAuthToken("admin-token-123")
+    .withTimeout(Duration.ofSeconds(30))
+    .withKeepAlive(Duration.ofSeconds(30))
+    .build();
+
+try (CacheClientApi client = new ClusterClient(config)) {
+    // Use client
+} catch (Exception e) {
+    // Handle error
+}
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>seedHosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>tcpPort</code>: TCP port for queries (required, default: 0).</li>
+                    <li><code>apiPort</code>: HTTP port for admin API (required, default: 0).</li>
+                    <li><code>authToken</code>: Bearer token for authentication (required).</li>
+                    <li><code>timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>httpTimeout</code>: HTTP timeout (default: 2s).</li>
+                    <li><code>keepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                    <li><code>maxActiveConns</code>: Maximum open TCP connections (default: 10).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>CacheClientApi</code> interface provides methods for managing properties,
+                    querying availability, and administrative tasks. All methods require appropriate authentication
+                    roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full bg-white shadow rounded-lg">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                                <th class="px-4 py-2 text-left">Required Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>setProp</code></td>
+                                <td class="border px-4 py-2">Add or update a property</td>
+                                <td class="border px-4 py-2"><code>SetPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>searchProp</code></td>
+                                <td class="border px-4 py-2">Search properties by segment, area, type, etc.</td>
+                                <td class="border px-4 py-2"><code>SearchPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>List&lt;String&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>searchAvail</code></td>
+                                <td class="border px-4 py-2">Search available rooms by criteria</td>
+                                <td class="border px-4 py-2"><code>SearchAvailPayload</code></td>
+                                <td class="border px-4 py-2"><code>List&lt;PropertyAvail&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>setRoomPkg</code></td>
+                                <td class="border px-4 py-2">Set room availability, price, and rate cancellation</td>
+                                <td class="border px-4 py-2"><code>SetRoomPkgPayload</code></td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>setRoomAvl</code></td>
+                                <td class="border px-4 py-2">Set room availability for a date</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>short</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>incRoomAvl</code></td>
+                                <td class="border px-4 py-2">Increment room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>short</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>decRoomAvl</code></td>
+                                <td class="border px-4 py-2">Decrement room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>short</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>propExist</code></td>
+                                <td class="border px-4 py-2">Check if a property exists</td>
+                                <td class="border px-4 py-2"><code>String</code></td>
+                                <td class="border px-4 py-2"><code>boolean</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>propRoomExist</code></td>
+                                <td class="border px-4 py-2">Check if a room type exists for a property</td>
+                                <td class="border px-4 py-2"><code>PropRoomExistPayload</code></td>
+                                <td class="border px-4 py-2"><code>boolean</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>propRoomList</code></td>
+                                <td class="border px-4 py-2">List room types for a property</td>
+                                <td class="border px-4 py-2"><code>String</code></td>
+                                <td class="border px-4 py-2"><code>List&lt;String&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>propRoomDateList</code></td>
+                                <td class="border px-4 py-2">List dates with availability for a room type</td>
+                                <td class="border px-4 py-2"><code>PropRoomDateListPayload</code></td>
+                                <td class="border px-4 py-2"><code>List&lt;String&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>delProp</code></td>
+                                <td class="border px-4 py-2">Delete a property</td>
+                                <td class="border px-4 py-2"><code>String</code></td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>delSegment</code></td>
+                                <td class="border px-4 py-2">Delete all properties in a segment</td>
+                                <td class="border px-4 py-2"><code>String</code></td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>delPropDay</code></td>
+                                <td class="border px-4 py-2">Delete all room data for a property on a date</td>
+                                <td class="border px-4 py-2"><code>DelPropDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>delPropRoom</code></td>
+                                <td class="border px-4 py-2">Delete a room type from a property</td>
+                                <td class="border px-4 py-2"><code>DelPropRoomPayload</code></td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>delRoomDay</code></td>
+                                <td class="border px-4 py-2">Delete a room's data for a specific date</td>
+                                <td class="border px-4 py-2"><code>DelRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>getPropRoomDay</code></td>
+                                <td class="border px-4 py-2">Get room details for a specific date</td>
+                                <td class="border px-4 py-2"><code>GetRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>GetRoomDayResult</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>getSegments</code></td>
+                                <td class="border px-4 py-2">List all segments and their property counts</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>List&lt;SegmentInfo&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>saveSnapshot</code></td>
+                                <td class="border px-4 py-2">Save current data to a snapshot</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>close</code></td>
+                                <td class="border px-4 py-2">Close the client connection</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>void</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>types</code> package. Key types include:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (Segment, Area, PropertyID, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (Segment, Area, Amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (Segment, RoomType, Date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>PropertyID</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000") or
+                        ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>Date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>Amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>RateCancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>RoomType</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+                <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+                <p class="mb-4">Below are examples of the most commonly used Java SDK methods for managing properties
+                    and querying availability.</p>
+                <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+                <p class="mb-4">Add or update a property using <code>setProp</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>import java.time.Duration;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.SetPropPayload;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            client.setProp(SetPropPayload.builder()
+                .segment("NorthAmerica-East")
+                .area("New York")
+                .propertyId("550e8400-e29b-41d4-a716-446655440000")
+                .propertyType("hotel")
+                .category("luxury")
+                .stars((short) 4)
+                .latitude(40.7138)
+                .longitude(-74.0050)
+                .amenities(List.of("wifi", "pool", "gym"))
+                .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+                <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                    <code>setRoomPkg</code>.
+                </p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>import java.time.Duration;
+import java.util.List;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.SetRoomPkgPayload;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            client.setRoomPkg(SetRoomPkgPayload.builder()
+                .propertyId("prop_1")
+                .roomType("single")
+                .date("2025-10-05")
+                .availability((short) 10)
+                .finalPrice(150)
+                .rateCancel(List.of("free_cancellation", "pay_at_property"))
+                .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+                <p class="mb-4">Reduce room availability for a specific date using <code>decRoomAvl</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>import java.time.Duration;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.UpdRoomAvlPayload;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            short newAvail = client.decRoomAvl(UpdRoomAvlPayload.builder()
+                .propertyId("prop_1")
+                .roomType("single")
+                .date("2025-10-05")
+                .amount((short) 1)
+                .build());
+            System.out.println("New availability: " + newAvail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+                <p class="mb-4">Search for available rooms by criteria using <code>searchAvail</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>import java.time.Duration;
+import java.util.List;
+import com.roomzin.roomzinjava.api.CacheClientApi;
+import com.roomzin.roomzinjava.client.single.SingleClient;
+import com.roomzin.roomzinjava.client.single.SingleConfig;
+import com.roomzin.roomzinjava.types.SearchAvailPayload;
+import com.roomzin.roomzinjava.types.PropertyAvail;
+
+public class Main {
+    public static void main(String[] args) {
+        SingleConfig config = SingleConfig.builder()
+            .withHost("127.0.0.1")
+            .withTcpPort(7777)
+            .withAuthToken("abc123")
+            .withTimeout(Duration.ofSeconds(5))
+            .build();
+
+        try (CacheClientApi client = new SingleClient(config)) {
+            List&lt;PropertyAvail&gt; results = client.searchAvail(SearchAvailPayload.builder()
+                .segment("NorthAmerica-East")
+                .roomType("single")
+                .date(List.of("2025-10-05", "2025-10-06"))
+                .amenities(List.of("wifi"))
+                .rateCancel(List.of("free_cancellation"))
+                .limit(100L)
+                .build());
+
+            for (PropertyAvail prop : results) {
+                System.out.println("Property: " + prop.getPropertyId());
+                for (DayAvail day : prop.getDays()) {
+                    System.out.printf("  Date: %s, Avail: %d, Price: %d%n", 
+                        day.getDate(), day.getAvailability(), day.getFinalPrice());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+            </div>
+            <div id="python-sdk" class="tab-content hidden">
+                <h3 class="text-xl font-semibold mb-2">Python SDK</h3>
+                <p class="mb-4">The Python SDK provides a robust interface for interacting with Roomzin in both
+                    standalone and clustered modes. It supports property management, availability queries, and
+                    administrative tasks. The SDK is available via a provided PyPI package; contact support for access.
+                </p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Install the SDK using pip. The public modules are <code>roomzin_py.api</code>,
+                    <code>roomzin_py.single</code>, <code>roomzin_py.cluster</code>, and <code>roomzin_py.types</code>.
+                    The <code>internal</code> module is not exposed to users.
+                </p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>pip install roomzin-py
+</code></pre>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>from roomzin_py.api import CacheClientAPI
+from roomzin_py.single import new_config_builder as single_config_builder, new_client as single_client
+from roomzin_py.cluster import new_config_builder as cluster_config_builder, new_client as cluster_client
+from roomzin_py.types.request import SetPropPayload, SearchPropPayload, SearchAvailPayload, SetRoomPkgPayload, UpdRoomAvlPayload
+from roomzin_py.types.response import PropertyAvail
+</code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective builder classes.
+                    Required fields include host, TCP port, and authentication token (see Authentication section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .with_keep_alive(30.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    # Use client
+    pass
+finally:
+    client.close()
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>tcp_port</code>: TCP port for queries (required).</li>
+                    <li><code>auth_token</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>timeout</code>: Request timeout in seconds (default: 2.0).</li>
+                    <li><code>keep_alive</code>: TCP keepalive interval in seconds (default: 30.0).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>from roomzin_py.cluster import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+
+config = new_config_builder() \
+    .with_seed_hosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost") \
+    .with_tcp_port(7777) \
+    .with_api_port(8080) \
+    .with_token("admin-token-123") \
+    .with_timeout(30.0) \
+    .with_http_timeout(2.0) \
+    .with_keep_alive(30.0) \
+    .with_max_active_conns(10) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    # Use client
+    pass
+finally:
+    client.close()
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>seed_hosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>tcp_port</code>: TCP port for queries (required).</li>
+                    <li><code>api_port</code>: HTTP port for admin API (required).</li>
+                    <li><code>auth_token</code>: Bearer token for authentication (required).</li>
+                    <li><code>timeout</code>: Request timeout in seconds (default: 2.0).</li>
+                    <li><code>http_timeout</code>: HTTP timeout in seconds (default: 2.0).</li>
+                    <li><code>keep_alive</code>: TCP keepalive interval in seconds (default: 30.0).</li>
+                    <li><code>max_active_conns</code>: Maximum open TCP connections (default: 10).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>CacheClientAPI</code> abstract base class provides methods for managing
+                    properties, querying availability, and administrative tasks. All methods require appropriate
+                    authentication roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full bg-white shadow rounded-lg">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                                <th class="px-4 py-2 text-left">Required Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>set_prop</code></td>
+                                <td class="border px-4 py-2">Add or update a property</td>
+                                <td class="border px-4 py-2"><code>SetPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>search_prop</code></td>
+                                <td class="border px-4 py-2">Search properties by segment, area, type, etc.</td>
+                                <td class="border px-4 py-2"><code>SearchPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>List[str]</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>search_avail</code></td>
+                                <td class="border px-4 py-2">Search available rooms by criteria</td>
+                                <td class="border px-4 py-2"><code>SearchAvailPayload</code></td>
+                                <td class="border px-4 py-2"><code>List[PropertyAvail]</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>set_room_pkg</code></td>
+                                <td class="border px-4 py-2">Set room availability, price, and rate cancellation</td>
+                                <td class="border px-4 py-2"><code>SetRoomPkgPayload</code></td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>set_room_avl</code></td>
+                                <td class="border px-4 py-2">Set room availability for a date</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>int</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>inc_room_avl</code></td>
+                                <td class="border px-4 py-2">Increment room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>int</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>dec_room_avl</code></td>
+                                <td class="border px-4 py-2">Decrement room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>int</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>prop_exist</code></td>
+                                <td class="border px-4 py-2">Check if a property exists</td>
+                                <td class="border px-4 py-2"><code>str</code></td>
+                                <td class="border px-4 py-2"><code>bool</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>prop_room_exist</code></td>
+                                <td class="border px-4 py-2">Check if a room type exists for a property</td>
+                                <td class="border px-4 py-2"><code>PropRoomExistPayload</code></td>
+                                <td class="border px-4 py-2"><code>bool</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>prop_room_list</code></td>
+                                <td class="border px-4 py-2">List room types for a property</td>
+                                <td class="border px-4 py-2"><code>str</code></td>
+                                <td class="border px-4 py-2"><code>List[str]</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>prop_room_date_list</code></td>
+                                <td class="border px-4 py-2">List dates with availability for a room type</td>
+                                <td class="border px-4 py-2"><code>PropRoomDateListPayload</code></td>
+                                <td class="border px-4 py-2"><code>List[str]</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>del_prop</code></td>
+                                <td class="border px-4 py-2">Delete a property</td>
+                                <td class="border px-4 py-2"><code>str</code></td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>del_segment</code></td>
+                                <td class="border px-4 py-2">Delete all properties in a segment</td>
+                                <td class="border px-4 py-2"><code>str</code></td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>del_prop_day</code></td>
+                                <td class="border px-4 py-2">Delete all room data for a property on a date</td>
+                                <td class="border px-4 py-2"><code>DelPropDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>del_prop_room</code></td>
+                                <td class="border px-4 py-2">Delete a room type from a property</td>
+                                <td class="border px-4 py-2"><code>DelPropRoomPayload</code></td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>del_room_day</code></td>
+                                <td class="border px-4 py-2">Delete a room's data for a specific date</td>
+                                <td class="border px-4 py-2"><code>DelRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>get_prop_room_day</code></td>
+                                <td class="border px-4 py-2">Get room details for a specific date</td>
+                                <td class="border px-4 py-2"><code>GetRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>GetRoomDayResult</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>get_segments</code></td>
+                                <td class="border px-4 py-2">List all segments and their property counts</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>List[SegmentInfo]</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>save_snapshot</code></td>
+                                <td class="border px-4 py-2">Save current data to a snapshot</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>close</code></td>
+                                <td class="border px-4 py-2">Close the client connection</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>None</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>roomzin_py.types</code> module. Key types include:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (segment, area, property_id, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (segment, area, amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (segment, room_type, date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>property_id</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000")
+                        or ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>rate_cancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>room_type</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+                <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+                <p class="mb-4">Below are examples of the most commonly used Python SDK methods for managing properties
+                    and querying availability.</p>
+                <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+                <p class="mb-4">Add or update a property using <code>set_prop</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import SetPropPayload
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    client.set_prop(SetPropPayload(
+        segment="NorthAmerica-East",
+        area="New York",
+        property_id="550e8400-e29b-41d4-a716-446655440000",
+        property_type="hotel",
+        category="luxury",
+        stars=4,
+        latitude=40.7138,
+        longitude=-74.0050,
+        amenities=["wifi", "pool", "gym"]
+    ))
+finally:
+    client.close()
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+                <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                    <code>set_room_pkg</code>.
+                </p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import SetRoomPkgPayload
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    client.set_room_pkg(SetRoomPkgPayload(
+        property_id="prop_1",
+        room_type="single",
+        date="2025-10-05",
+        availability=10,
+        final_price=150,
+        rate_cancel=["free_cancellation", "pay_at_property"]
+    ))
+finally:
+    client.close()
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+                <p class="mb-4">Reduce room availability for a specific date using <code>dec_room_avl</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import UpdRoomAvlPayload
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    new_avail = client.dec_room_avl(UpdRoomAvlPayload(
+        property_id="prop_1",
+        room_type="single",
+        date="2025-10-05",
+        amount=1
+    ))
+    print(f"New availability: {new_avail}")
+finally:
+    client.close()
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+                <p class="mb-4">Search for available rooms by criteria using <code>search_avail</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>from roomzin_py.single import new_config_builder, new_client
+from roomzin_py.api import CacheClientAPI
+from roomzin_py.types.request import SearchAvailPayload
+from roomzin_py.types.response import PropertyAvail
+
+config = new_config_builder() \
+    .with_host("127.0.0.1") \
+    .with_tcp_port(7777) \
+    .with_token("abc123") \
+    .with_timeout(5.0) \
+    .build()
+
+client: CacheClientAPI = new_client(config)
+try:
+    results = client.search_avail(SearchAvailPayload(
+        segment="NorthAmerica-East",
+        room_type="single",
+        date=["2025-10-05", "2025-10-06"],
+        amenities=["wifi"],
+        rate_cancel=["free_cancellation"],
+        limit=100
+    ))
+    for prop in results:
+        print(f"Property: {prop.property_id}")
+        for day in prop.days:
+            print(f"  Date: {day.date}, Avail: {day.availability}, Price: {day.final_price}")
+finally:
+    client.close()
+</code></pre>
+            </div>
+            <div id="csharp-sdk" class="tab-content hidden">
+                <h3 class="text-xl font-semibold mb-2">C# SDK</h3>
+                <p class="mb-4">The C# SDK provides a robust interface for interacting with Roomzin in both standalone
+                    and clustered modes. It supports property management, availability queries, and administrative
+                    tasks. The SDK is available via a provided NuGet package; contact support for access.</p>
+                <h4 class="text-lg font-semibold mb-2">Setup</h4>
+                <p class="mb-4">Install the SDK using NuGet. The public namespaces are
+                    <code>Roomzin.Sdk.Internal.Api</code>, <code>Roomzin.Sdk.Internal.Single</code>,
+                    <code>Roomzin.Sdk.Internal.Cluster</code>, and <code>Roomzin.Sdk.Types</code>. The
+                    <code>Internal</code> subnamespaces contain implementation details not exposed to users.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>dotnet add package Roomzin.Sdk
+</code></pre>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Internal.Cluster;
+using Roomzin.Sdk.Types.Requests;
+using Roomzin.Sdk.Types.Responses;
+</code></pre>
+                <h4 class="text-lg font-semibold mb-2">Configuration</h4>
+                <p class="mb-4">Configure the SDK for standalone or clustered mode using the respective builder classes.
+                    Required fields include host, TCP port, and authentication token (see Authentication section).</p>
+                <h5 class="text-md font-semibold mb-2">Standalone Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>using System;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+
+var config = new ConfigBuilder()
+    .WithHost("127.0.0.1")
+    .WithTcpPort(7777)
+    .WithToken("abc123")
+    .WithTimeout(TimeSpan.FromSeconds(5))
+    .WithKeepAlive(TimeSpan.FromSeconds(30))
+    .Build();
+
+await using var client = Client.New(config);
+// Use client
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>Host</code>: Server address (required, e.g., "127.0.0.1").</li>
+                    <li><code>TcpPort</code>: TCP port for queries (required).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required, see Authentication).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                </ul>
+                <h5 class="text-md font-semibold mb-2">Clustered Configuration</h5>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-4"><code>using System;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Cluster;
+
+var config = new ClusterConfigBuilder()
+    .WithSeedHosts("roomzin-0.localhost,roomzin-1.localhost,roomzin-2.localhost")
+    .WithTcpPort(7777)
+    .WithApiPort(8080)
+    .WithToken("admin-token-123")
+    .WithTimeout(TimeSpan.FromSeconds(30))
+    .WithHttpTimeout(TimeSpan.FromSeconds(2))
+    .WithKeepAlive(TimeSpan.FromSeconds(30))
+    .WithMaxActiveConns(10)
+    .Build();
+
+await using var client = Client.New(config);
+// Use client
+</code></pre>
+                <p class="mb-4">Fields:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SeedHosts</code>: Comma-separated list of seed node hostnames (required, e.g.,
+                        "roomzin-0.localhost,roomzin-1.localhost").</li>
+                    <li><code>TcpPort</code>: TCP port for queries (required).</li>
+                    <li><code>ApiPort</code>: HTTP port for admin API (required).</li>
+                    <li><code>AuthToken</code>: Bearer token for authentication (required).</li>
+                    <li><code>Timeout</code>: Request timeout (default: 2s).</li>
+                    <li><code>HttpTimeout</code>: HTTP timeout (default: 2s).</li>
+                    <li><code>KeepAlive</code>: TCP keepalive interval (default: 30s).</li>
+                    <li><code>MaxActiveConns</code>: Maximum open TCP connections (default: 10).</li>
+                </ul>
+                <h4 class="text-lg font-semibold mb-2">API Methods</h4>
+                <p class="mb-4">The <code>ICacheClientApi</code> interface provides methods for managing properties,
+                    querying availability, and administrative tasks. All methods are asynchronous and require
+                    appropriate authentication roles (see Authentication).</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full bg-white shadow rounded-lg">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-4 py-2 text-left">Method</th>
+                                <th class="px-4 py-2 text-left">Description</th>
+                                <th class="px-4 py-2 text-left">Input</th>
+                                <th class="px-4 py-2 text-left">Output</th>
+                                <th class="px-4 py-2 text-left">Required Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SetPropAsync</code></td>
+                                <td class="border px-4 py-2">Add or update a property</td>
+                                <td class="border px-4 py-2"><code>SetPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SearchPropAsync</code></td>
+                                <td class="border px-4 py-2">Search properties by segment, area, type, etc.</td>
+                                <td class="border px-4 py-2"><code>SearchPropPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;List&lt;string&gt;&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SearchAvailAsync</code></td>
+                                <td class="border px-4 py-2">Search available rooms by criteria</td>
+                                <td class="border px-4 py-2"><code>SearchAvailPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;List&lt;PropertyAvail&gt;&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SetRoomPkgAsync</code></td>
+                                <td class="border px-4 py-2">Set room availability, price, and rate cancellation</td>
+                                <td class="border px-4 py-2"><code>SetRoomPkgPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SetRoomAvlAsync</code></td>
+                                <td class="border px-4 py-2">Set room availability for a date</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;byte&gt;</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>IncRoomAvlAsync</code></td>
+                                <td class="border px-4 py-2">Increment room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;byte&gt;</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DecRoomAvlAsync</code></td>
+                                <td class="border px-4 py-2">Decrement room availability</td>
+                                <td class="border px-4 py-2"><code>UpdRoomAvlPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;byte&gt;</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropExistAsync</code></td>
+                                <td class="border px-4 py-2">Check if a property exists</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;bool&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropRoomExistAsync</code></td>
+                                <td class="border px-4 py-2">Check if a room type exists for a property</td>
+                                <td class="border px-4 py-2"><code>PropRoomExistPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;bool&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropRoomListAsync</code></td>
+                                <td class="border px-4 py-2">List room types for a property</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;List&lt;string&gt;&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>PropRoomDateListAsync</code></td>
+                                <td class="border px-4 py-2">List dates with availability for a room type</td>
+                                <td class="border px-4 py-2"><code>PropRoomDateListPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;List&lt;string&gt;&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelPropAsync</code></td>
+                                <td class="border px-4 py-2">Delete a property</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelSegmentAsync</code></td>
+                                <td class="border px-4 py-2">Delete all properties in a segment</td>
+                                <td class="border px-4 py-2"><code>string</code></td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelPropDayAsync</code></td>
+                                <td class="border px-4 py-2">Delete all room data for a property on a date</td>
+                                <td class="border px-4 py-2"><code>DelPropDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelPropRoomAsync</code></td>
+                                <td class="border px-4 py-2">Delete a room type from a property</td>
+                                <td class="border px-4 py-2"><code>DelPropRoomPayload</code></td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>DelRoomDayAsync</code></td>
+                                <td class="border px-4 py-2">Delete a room's data for a specific date</td>
+                                <td class="border px-4 py-2"><code>DelRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>GetPropRoomDayAsync</code></td>
+                                <td class="border px-4 py-2">Get room details for a specific date</td>
+                                <td class="border px-4 py-2"><code>GetRoomDayRequest</code></td>
+                                <td class="border px-4 py-2"><code>Task&lt;GetRoomDayResult&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>GetSegmentsAsync</code></td>
+                                <td class="border px-4 py-2">List all segments and their property counts</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>Task&lt;List&lt;SegmentInfo&gt;&gt;</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>SaveSnapshotAsync</code></td>
+                                <td class="border px-4 py-2">Save current data to a snapshot</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">admin</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-4 py-2"><code>CloseAsync</code></td>
+                                <td class="border px-4 py-2">Close the client connection</td>
+                                <td class="border px-4 py-2">None</td>
+                                <td class="border px-4 py-2"><code>Task</code></td>
+                                <td class="border px-4 py-2">user+</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="text-lg font-semibold mb-2">Data Types</h4>
+                <p class="mb-4">The SDK uses structured payloads for requests and responses, defined in the
+                    <code>Roomzin.Sdk.Types</code> namespace. Key types include:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>SetPropPayload</code>: Add/update a property (Segment, Area, PropertyId, etc.).</li>
+                    <li><code>SearchPropPayload</code>: Search properties by criteria (Segment, Area, Amenities, etc.).
+                    </li>
+                    <li><code>SearchAvailPayload</code>: Search available rooms by criteria (Segment, RoomType, Date,
+                        etc.).</li>
+                    <li><code>SetRoomPkgPayload</code>: Set room availability, price, and rate cancellation.</li>
+                    <li><code>UpdRoomAvlPayload</code>: Update room availability (set, increment, decrement).</li>
+                    <li><code>GetRoomDayResult</code>: Room details for a specific date.</li>
+                    <li><code>PropertyAvail</code>: Availability results with per-day details.</li>
+                    <li><code>SegmentInfo</code>: Segment name and property count.</li>
+                </ul>
+                <p class="mb-4">Key fields and validation rules:</p>
+                <ul class="list-disc pl-6 mb-4">
+                    <li><code>PropertyId</code>: UUID string (36 chars, e.g., "550e8400-e29b-41d4-a716-446655440000") or
+                        ASCII text (max 14 chars, e.g., "prop_1").</li>
+                    <li><code>Date</code>: YYYY-MM-DD format, not in the past, within 365 days from today.</li>
+                    <li><code>Amenities</code>: List of standard amenities (see Data Format and Limitations).</li>
+                    <li><code>RateCancel</code>: List of standard rate cancellation options (see Data Format and
+                        Limitations).</li>
+                    <li><code>RoomType</code>: Up to 256 types per property, recommended &lt;10 for performance.</li>
+                </ul>
+                <p class="mb-4">See Data Format and Limitations for valid amenities and rate cancellation options.</p>
+                <h4 class="text-lg font-semibold mb-2">Usage Examples</h4>
+                <p class="mb-4">Below are examples of the most commonly used C# SDK methods for managing properties and
+                    querying availability.</p>
+                <h5 class="text-md font-semibold mb-2">Add a Property</h5>
+                <p class="mb-4">Add or update a property using <code>SetPropAsync</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            await client.SetPropAsync(new SetPropPayload
+            {
+                Segment = "NorthAmerica-East",
+                Area = "New York",
+                PropertyId = "550e8400-e29b-41d4-a716-446655440000",
+                PropertyType = "hotel",
+                Category = "luxury",
+                Stars = 4,
+                Latitude = 40.7138,
+                Longitude = -74.0050,
+                Amenities = new[] { "wifi", "pool", "gym" }
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Set Room Package</h5>
+                <p class="mb-4">Set availability, price, and rate cancellation for a room type on a specific date using
+                    <code>SetRoomPkgAsync</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            await client.SetRoomPkgAsync(new SetRoomPkgPayload
+            {
+                PropertyId = "prop_1",
+                RoomType = "single",
+                Date = "2025-10-05",
+                Availability = 10,
+                FinalPrice = 150,
+                RateCancel = new[] { "free_cancellation", "pay_at_property" }
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Decrement Room Availability</h5>
+                <p class="mb-4">Reduce room availability for a specific date using <code>DecRoomAvlAsync</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            byte newAvail = await client.DecRoomAvlAsync(new UpdRoomAvlPayload
+            {
+                PropertyId = "prop_1",
+                RoomType = "single",
+                Date = "2025-10-05",
+                Amount = 1
+            });
+            Console.WriteLine($"New availability: {newAvail}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+                <h5 class="text-md font-semibold mb-2">Search Available Rooms</h5>
+                <p class="mb-4">Search for available rooms by criteria using <code>SearchAvailAsync</code>.</p>
+                <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto mb-8"><code>using System;
+using System.Threading.Tasks;
+using Roomzin.Sdk.Internal.Api;
+using Roomzin.Sdk.Internal.Single;
+using Roomzin.Sdk.Types.Requests;
+using Roomzin.Sdk.Types.Responses;
+
+class Program
+{
+    static async Task Main()
+    {
+        var config = new ConfigBuilder()
+            .WithHost("127.0.0.1")
+            .WithTcpPort(7777)
+            .WithToken("abc123")
+            .WithTimeout(TimeSpan.FromSeconds(5))
+            .WithKeepAlive(TimeSpan.FromSeconds(30))
+            .Build();
+
+        await using var client = Client.New(config);
+        try
+        {
+            var results = await client.SearchAvailAsync(new SearchAvailPayload
+            {
+                Segment = "NorthAmerica-East",
+                RoomType = "single",
+                Date = new[] { "2025-10-05", "2025-10-06" },
+                Amenities = new[] { "wifi" },
+                RateCancel = new[] { "free_cancellation" },
+                Limit = 100
+            });
+
+            foreach (var prop in results)
+            {
+                Console.WriteLine($"Property: {prop.PropertyId}");
+                foreach (var day in prop.Days)
+                {
+                    Console.WriteLine($"  Date: {day.Date}, Avail: {day.Availability}, Price: {day.FinalPrice}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
+</code></pre>
+            </div>
         </section>
 
         <section class="mb-12 bg-white shadow rounded-lg p-6">
