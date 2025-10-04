@@ -11,7 +11,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="bg-gray-100 font-['Inter']">
     <header class="bg-white">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="logo text-2xl font-semibold">
@@ -25,10 +25,460 @@
         </nav>
     </header>
 
+    <div class="hero bg-blue-600 text-white text-center py-12 hdrdiv">
+        <img src="roomzin.png" style="margin: auto; width: 200px;" />
+        <p class="text-lg mt-2">Get started with Roomzin's in-memory inventory engine</p>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Introduction</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin is a specialized in-memory inventory engine designed for travel and hospitality
+                platforms. It provides instant availability and pricing lookups with low latency, even under heavy
+                traffic. Roomzin supports both standalone and clustered modes, with features like Raft-like consensus,
+                auto-discovery, and smart SDKs for seamless integration.</p>
+            <p class="mb-4">Roomzin is not a general-purpose database; it is optimized for covering approximately 95% of
+                typical user searches in booking platforms, focusing on performance for queries within a short date
+                range (e.g., the next 15–60 days). It keeps properties, room types, availability, and prices in memory
+                for fast, single-query responses without joins or round-trips.</p>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Getting Started</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin is provided as a binary executable to clients. To get started:</p>
+            <ol class="list-decimal pl-6 mb-4">
+                <li><b>Obtain the Binary</b>: Contact support to receive the Roomzin binary for your platform.</li>
+                <li><b>Prepare Configuration Files</b>: Create a <code>roomzin.yml</code> server configuration file and
+                    an authentication file (see Configuration and Authentication sections below).</li>
+                <li><b>Set Up Snapshot Path</b>: Ensure the snapshot directory is writable and accessible.</li>
+                <li><b>Create Initial Snapshot</b>: Convert your database data into snapshots using the
+                    <code>build-snapshot</code> command for faster (4M/s) initialization than inserting data via
+                    queries. This
+                    requires preparing <code>properties.csv</code> and <code>packages.csv</code> files (see Building
+                    Snapshots and Data Format and Limitations).
+                </li>
+                <li><b>Run Roomzin</b>: Use the CLI to start the server in standalone or clustered mode (see Running
+                    Roomzin).</li>
+                <li><b>Integrate with SDKs</b>: Use provided SDKs for querying the engine (see SDK Integration).</li>
+            </ol>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Configuration</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin uses a YAML configuration file (<code>roomzin.yml</code>) to define server settings.
+                The file is automatically located in one of these paths (in order of priority):</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Specified via the <code>--config</code> CLI argument.</li>
+                <li>Current directory (<code>./roomzin.yml</code>).</li>
+                <li>System directory (<code>/etc/roomzin/roomzin.yml</code>).</li>
+            </ul>
+            <p class="mb-4">The configuration includes sections for core allocation, TCP settings, cluster settings,
+                authentication file path, API port, snapshot path, and maintenance hour. Below is a sample configuration
+                with default values explained:</p>
+            <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto"><code>core_config:
+  cores_sys: 0  # Number of system cores (default: 0; auto-detected if not set)
+  cores_state: 0  # Number of state cores (default: 0; auto-detected if not set)
+
+tcp:
+  listen_addr: "127.0.0.1"  # TCP listen address (default: "127.0.0.1")
+  port: 7777  # TCP port for main service queries (default: 7777)
+  max_connections: 10000  # Maximum concurrent connections (default: 10000)
+  tcp_user_timeout_ms: 200  # TCP user timeout in milliseconds (default: 200)
+  tcp_keepalive_seconds: 30  # TCP keepalive interval in seconds (default: 30)
+  tcp_recv_buffer_size: 262144  # TCP receive buffer size in bytes (default: 256 * 1024)
+  tcp_send_buffer_size: 131072  # TCP send buffer size in bytes (default: 128 * 1024)
+
+cluster:
+  node_id: "local"  # Unique node identifier (default: "local")
+  shard_id: "local"  # Shard identifier (default: "local")
+  zone_id: "local"  # Zone identifier (default: "local")
+  port: 17777  # Cluster port for node-to-node communication (default: 17777)
+  seed: ""  # Seed node address for cluster joining (default: "")
+  quorum_size: 3  # Quorum size for consensus (default: 3)
+  cert_path: ""  # Path to TLS certificate file (required for clustered mode)
+  key_path: ""  # Path to TLS private key file (required for clustered mode)
+  ca_cert_path: ""  # Path to CA certificate file (required for clustered mode)
+
+auth_file: ""  # Path to authentication YAML file (required)
+api_port: 0  # HTTP port for admin API (required; e.g., 8080)
+snapshot_path: ""  # Path to snapshot directory (required; must be writable)
+maintenance_hour: 0  # Hour (0-23) for scheduled maintenance (default: 0)
+</code></pre>
+            <p class="mb-4">Notes:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>The snapshot path must be validated as writable during startup.</li>
+                <li>For clustered mode, provide valid TLS certificate paths for secure QUIC node-to-node communication.
+                    TLS is not enabled on TCP connections, as Roomzin is intended for internal use.</li>
+                <li>Core configuration allows specifying system and state cores for performance tuning; defaults to
+                    auto-detection based on hardware.</li>
+            </ul>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Authentication</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin uses token-based authentication with role-based access control (RBAC) for the admin
+                API and certain actions. Tokens are defined in a separate YAML file specified in the server
+                configuration (<code>auth_file</code>).</p>
+            <p class="mb-4">Sample authentication file (<code>auth.yml</code>):</p>
+            <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto"><code>tokens:
+  - token: abc123
+    role: admin
+  - token: xyz789
+    role: operator
+  - token: read456
+    role: readonly
+  - token: user789
+    role: user
+</code></pre>
+            <p class="mb-4">Roles and Permissions:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><b>admin</b>: Full access to all endpoints and actions (e.g., shutdown, update peers, TLS rotate,
+                    save snapshot).</li>
+                <li><b>operator</b>: Access to monitoring endpoints like /healthz, /metrics, /snapshot-info, /peers
+                    (GET), /tls-rotate, /node-info, /leader.</li>
+                <li><b>readonly</b>: Access only to /metrics.</li>
+                <li><b>user</b>: No access to admin API endpoints or actions.</li>
+            </ul>
+            <p class="mb-4">All admin API requests require a Bearer token in the Authorization header, e.g.,
+                <code>Authorization: Bearer abc123</code>. Invalid or unauthorized tokens return 401 or 403 errors.
+            </p>
+            <p class="mb-4">In clustered mode, tokens can be reloaded without restart via the /reload-tokens endpoint
+                (admin role required).</p>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Running Roomzin</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Use the Roomzin binary CLI to run the server. The binary supports two modes: standalone
+                (single node) and clustered (distributed with high availability).</p>
+            <h3 class="text-xl font-semibold mb-2">Standalone Mode</h3>
+            <p class="mb-4">For single-node operation:</p>
+            <pre
+                class="bg-gray-800 text-white p-4 rounded"><code>roomzin run --mode standalone --config /path/to/roomzin.yml</code></pre>
+            <h3 class="text-xl font-semibold mb-2">Clustered Mode</h3>
+            <p class="mb-4">For distributed operation (requires TLS certificates in config):</p>
+            <pre
+                class="bg-gray-800 text-white p-4 rounded"><code>roomzin run --mode clustered --config /path/to/roomzin.yml</code></pre>
+            <p class="mb-4">In clustered mode, nodes use QUIC for secure communication with TLS auto-rotation. Provide a
+                seed node in the config for initial joining.</p>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Building Snapshots</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin supports creating snapshots from CSV files to initialize data efficiently. Snapshots
+                are significantly faster than sending insert queries, with the ability to ingest 4–5 million records per
+                second from CSV files. Use the <code>build-snapshot</code> command to generate snapshots, which are then
+                loaded from the configured <code>snapshot_path</code> at startup.</p>
+            <p class="mb-4">To create a snapshot, prepare two CSV files: <code>properties.csv</code> (listing
+                properties) and <code>packages.csv</code> (listing room types, availability, pricing, and rate
+                cancellation details). Place these files in a directory and specify it as the input path.</p>
+            <h3 class="text-xl font-semibold mb-2">Command</h3>
+            <pre
+                class="bg-gray-800 text-white p-4 rounded"><code>roomzin build-snapshot --shard-id &lt;shard_id&gt; --input-path /path/to/csvs --output-path /path/to/snapshot</code></pre>
+            <p class="mb-4">Parameters:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>--shard-id</code>: Unique shard identifier (e.g., "shard1").</li>
+                <li><code>--input-path</code>: Directory containing <code>properties.csv</code> and
+                    <code>packages.csv</code>.
+                </li>
+                <li><code>--output-path</code>: Directory to save snapshot files, which should match the
+                    <code>snapshot_path</code> in your configuration.
+                </li>
+            </ul>
+            <h3 class="text-xl font-semibold mb-2">CSV File Formats</h3>
+            <p class="mb-4"><b>properties.csv</b>: Defines properties with their details. Structure:</p>
+            <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto"><code>PropertyID,Segment,Area,PropertyType,Category,Stars,Latitude,Longitude,Amenities
+prop_1,NorthAmerica-East,New York,hotel,test,4,40.713800,-74.005000,wifi|pool|gym|parking
+</code></pre>
+            <p class="mb-4">Fields:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>PropertyID</code>: UUID string or ASCII text (max 16 chars).
+                    Examples: "550e8400-e29b-41d4-a716-446655440000" or "prop_1"
+                </li>
+                <li><code>Segment</code>: Segment is a name or id. It is like internal sharding key and is the
+                    most important decision point on performance. This can be a region, city or any block you decide to
+                    group properties. Segment is a required field in search queries.</li>
+                <li><code>Area</code>: Area (e.g., "New York"). Might be a name or id for futher sectioning the data
+                    for finer or faster search.</li>
+                <li><code>PropertyType</code>: Type (e.g., "hotel").</li>
+                <li><code>Category</code>: Category (e.g., "test").</li>
+                <li><code>Stars</code>: Star rating (e.g., 4).</li>
+                <li><code>Latitude</code>, <code>Longitude</code>: Geographic coordinates.</li>
+                <li><code>Amenities</code>: Pipe-separated (<code>|</code>) list of amenities, mapped to the standard
+                    set (see Data Format and Limitations).</li>
+            </ul>
+            <p class="mb-4"><b>packages.csv</b>: Defines room types, availability, pricing, and rate cancellation
+                details for each property. Structure:</p>
+            <pre class="bg-gray-800 text-white p-4 rounded overflow-x-auto"><code>PropertyID,RoomType,Date,Availability,FinalPrice,RateCancel
+prop_1,room_1,2025-10-03,7,120,free_cancellation|non_refundable|pay_at_property|includes_breakfast
+</code></pre>
+            <p class="mb-4">Fields:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><code>PropertyID</code>: Matches a property in <code>properties.csv</code>.</li>
+                <li><code>RoomType</code>: Room type identifier (e.g., "room_1"; up to 256 types, recommended &lt;10 for
+                    performance).</li>
+                <li><code>Date</code>: Date in short string format (e.g., "2025-10-03").</li>
+                <li><code>Availability</code>: Number of available rooms (e.g., 7).</li>
+                <li><code>FinalPrice</code>: Price for the room on that date (e.g., 120).</li>
+                <li><code>RateCancel</code>: Pipe-separated (<code>|</code>) list of rate cancellation options, mapped
+                    to the standard set (see Data Format and Limitations).</li>
+            </ul>
+            <p class="mb-4">After running the command, place the generated snapshot files in the
+                <code>snapshot_path</code> configured in <code>roomzin.yml</code>. Snapshots load quickly at startup, as
+                shown in the benchmarks.
+            </p>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Data Format and Limitations</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin enforces standardized data formats for amenities, room types, and rate cancellation
+                options to ensure consistency and performance. These constraints apply to the
+                <code>properties.csv</code> and <code>packages.csv</code> files used in snapshot creation.
+            </p>
+            <h3 class="text-xl font-semibold mb-2">Amenities</h3>
+            <p class="mb-4">The <code>Amenities</code> field in <code>properties.csv</code> must use a pipe-separated
+                (<code>|</code>) list of values from this standard set. Map your property amenities to these options:
+            </p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>wifi</li>
+                <li>pool</li>
+                <li>gym</li>
+                <li>parking</li>
+                <li>breakfast</li>
+                <li>spa</li>
+                <li>pet_friendly</li>
+                <li>bar</li>
+                <li>restaurant</li>
+                <li>air_conditioner</li>
+                <li>kitchen</li>
+                <li>laundry</li>
+                <li>shuttle</li>
+                <li>family_rooms</li>
+                <li>ev_charging</li>
+                <li>beach_access</li>
+            </ul>
+            <p class="mb-4">Example: <code>wifi|pool|gym</code>. Using non-standard amenities will cause errors during
+                snapshot creation.</p>
+            <h3 class="text-xl font-semibold mb-2">Room Types</h3>
+            <p class="mb-4">The <code>RoomType</code> field in <code>packages.csv</code> supports up to 256 unique room
+                types per property. For optimal performance, keep room types under 10 per property to reduce memory
+                usage and improve query speed. Use consistent identifiers.</p>
+            <h3 class="text-xl font-semibold mb-2">Rate Cancellation Options</h3>
+            <p class="mb-4">The <code>RateCancel</code> field in <code>packages.csv</code> must use a pipe-separated
+                (<code>|</code>) list of values from this standard set. Map your rate policies to these options:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>free_cancellation</li>
+                <li>non_refundable</li>
+                <li>pay_at_property</li>
+                <li>includes_breakfast</li>
+                <li>free_wifi</li>
+                <li>no_prepayment</li>
+                <li>partial_refund</li>
+                <li>instant_confirmation</li>
+            </ul>
+            <p class="mb-4">Example: <code>free_cancellation|pay_at_property</code>. Using non-standard options will
+                cause errors during snapshot creation.</p>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Query Limitations and Usage Notes</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin is optimized for performance in booking searches:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Maximum date range in queries: 7 days (configurable as MAX_DATES_IN_QUERY internally, but fixed for
+                    clients).</li>
+                <li>Designed for 95% of typical searches (e.g., short-term bookings); not a full database replacement.
+                </li>
+                <li>Queries are handled over TCP (default port 7777) using SDKs for efficient integration.</li>
+            </ul>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Admin API</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin provides an HTTP admin API on the configured <code>api_port</code> for monitoring
+                and management. All endpoints require authentication via Bearer token. The API differs slightly between
+                standalone and clustered modes.</p>
+            <h3 class="text-xl font-semibold mb-2">Common Endpoints</h3>
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full bg-white shadow rounded-lg">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Endpoint</th>
+                            <th class="px-4 py-2 text-left">Method</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                            <th class="px-4 py-2 text-left">Required Role</th>
+                            <th class="px-4 py-2 text-left">Response</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/healthz</td>
+                            <td class="border px-4 py-2">GET</td>
+                            <td class="border px-4 py-2">Check node health (standalone: "active"/"unavailable";
+                                clustered: "active_leader"/"active_follower"/"unavailable")</td>
+                            <td class="border px-4 py-2">operator+</td>
+                            <td class="border px-4 py-2">Status code and text</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/metrics</td>
+                            <td class="border px-4 py-2">GET</td>
+                            <td class="border px-4 py-2">Prometheus metrics (standalone filters cluster metrics;
+                                clustered includes all)</td>
+                            <td class="border px-4 py-2">readonly+</td>
+                            <td class="border px-4 py-2">Prometheus text format</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/shutdown</td>
+                            <td class="border px-4 py-2">POST</td>
+                            <td class="border px-4 py-2">Graceful shutdown (body: {"confirm": true})</td>
+                            <td class="border px-4 py-2">admin</td>
+                            <td class="border px-4 py-2">JSON message</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Clustered-Only Endpoints</h3>
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full bg-white shadow rounded-lg">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Endpoint</th>
+                            <th class="px-4 py-2 text-left">Method</th>
+                            <th class="px-4 py-2 text-left">Description</th>
+                            <th class="px-4 py-2 text-left">Required Role</th>
+                            <th class="px-4 py-2 text-left">Response</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/reload-tokens</td>
+                            <td class="border px-4 py-2">POST</td>
+                            <td class="border px-4 py-2">Reload authentication tokens from file</td>
+                            <td class="border px-4 py-2">admin</td>
+                            <td class="border px-4 py-2">JSON message</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/node-info</td>
+                            <td class="border px-4 py-2">GET</td>
+                            <td class="border px-4 py-2">Get node details (leader_id, leader_url, shard_id, zone_id,
+                                node_id)</td>
+                            <td class="border px-4 py-2">operator+</td>
+                            <td class="border px-4 py-2">JSON object</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/leader</td>
+                            <td class="border px-4 py-2">GET</td>
+                            <td class="border px-4 py-2">Get current leader URL</td>
+                            <td class="border px-4 py-2">operator+</td>
+                            <td class="border px-4 py-2">JSON {"leader_url": "..."}</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/tls-rotate</td>
+                            <td class="border px-4 py-2">POST</td>
+                            <td class="border px-4 py-2">Signal TLS certificate rotation for node-to-node QUIC</td>
+                            <td class="border px-4 py-2">admin</td>
+                            <td class="border px-4 py-2">JSON message</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/snapshot-info</td>
+                            <td class="border px-4 py-2">GET</td>
+                            <td class="border px-4 py-2">Get current snapshot information</td>
+                            <td class="border px-4 py-2">operator+</td>
+                            <td class="border px-4 py-2">JSON SnapshotInfo</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/peers</td>
+                            <td class="border px-4 py-2">GET</td>
+                            <td class="border px-4 py-2">Get list of peer nodes</td>
+                            <td class="border px-4 py-2">operator+</td>
+                            <td class="border px-4 py-2">JSON array of strings</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-4 py-2">/peers</td>
+                            <td class="border px-4 py-2">POST</td>
+                            <td class="border px-4 py-2">Update list of peer nodes (body: array of strings)</td>
+                            <td class="border px-4 py-2">admin</td>
+                            <td class="border px-4 py-2">JSON message</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mb-4">Use tools like curl for API calls, e.g.:</p>
+            <pre
+                class="bg-gray-800 text-white p-4 rounded"><code>curl -H "Authorization: Bearer abc123" http://localhost:8080/healthz</code></pre>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">SDK Integration</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">Roomzin provides SDKs in Java, Go, Python, and C# for querying the inventory engine over
+                TCP. SDKs handle:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li>Automatic routing to the correct node in clusters.</li>
+                <li>Failover and retry logic.</li>
+                <li>Load balancing across nodes.</li>
+                <li>Connection pooling and multiplexing.</li>
+            </ul>
+            <p class="mb-4">Contact support for SDK downloads and detailed documentation. Example (Python SDK):</p>
+            <pre class="bg-gray-800 text-white p-4 rounded"><code>from roomzin import RoomzinClient
+client = RoomzinClient(endpoint="127.0.0.1:7777")
+results = client.query_availability(location="NYC", checkin="2025-11-01", checkout="2025-11-03", max_days=7)
+</code></pre>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Cluster Management</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4">In clustered mode, Roomzin supports:</p>
+            <ul class="list-disc pl-6 mb-4">
+                <li><b>Leader/Follower Architecture</b>: Raft-like consensus with snapshots and WAL for high
+                    availability.</li>
+                <li><b>Auto Service Discovery and Join</b>: Nodes discover each other and catch up automatically.</li>
+                <li><b>QUIC Networking</b>: Secure node-to-node communication with TLS (auto-rotation via /tls-rotate).
+                </li>
+                <li><b>Partitioning</b>: Data segmented for concurrent processing.</li>
+                <li><b>Peer Management</b>: Update peers via /peers POST (admin role).</li>
+                <li><b>Snapshot Saving Under Load</b>: Supported in clustered mode.</li>
+            </ul>
+            <p class="mb-4">Monitor via /node-info, /leader, and /metrics. Use /shutdown for graceful termination.</p>
+        </section>
+
+        <section class="mb-12 bg-white shadow rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Troubleshooting and FAQs</h2>
+            <hr class="border-gray-300 mb-4" />
+            <p class="mb-4"><b>Q: Startup fails with config error?</b></p>
+            <p class="mb-4">A: Check config file paths, snapshot directory writability, and TLS certs for clustered
+                mode.</p>
+            <p class="mb-4"><b>Q: Authentication fails?</b></p>
+            <p class="mb-4">A: Verify token in auth file and use Bearer header. Reload tokens if changed (clustered
+                only).</p>
+            <p class="mb-4"><b>Q: Node not joining cluster?</b></p>
+            <p class="mb-4">A: Ensure seed address, quorum size, and TLS certs are correct. Check logs for errors.</p>
+            <p class="mb-4"><b>Q: High latency?</b></p>
+            <p class="mb-4">A: Tune core_config, increase segments, or use more hardware. Refer to benchmarks for
+                expectations.</p>
+        </section>
+
+        <section class="mb-12 bg-blue-600 text-white text-center py-8 rounded-lg">
+            <h2 class="text-2xl font-semibold mb-4">Need More Help?</h2>
+            <p class="mb-4">Contact our support team for binaries, SDKs, or assistance.</p>
+            <a href="mailto:support@roomzin.com"
+                class="inline-block bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-100">Contact Support</a>
+        </section>
+    </div>
+
     <footer class="bg-gray-800 text-white text-center py-4">
         <p>&copy; 2025 Roomzin. All rights reserved.</p>
     </footer>
 
+    <script src="js/script.js"></script>
 </body>
 
 </html>
