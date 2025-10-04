@@ -197,14 +197,18 @@ prop_1,NorthAmerica-East,New York,hotel,test,4,40.713800,-74.005000,wifi|pool|gy
 </code></pre>
             <p class="mb-4">Fields:</p>
             <ul class="list-disc pl-6 mb-4">
-                <li><code>PropertyID</code>: UUID string or ASCII text (max 16 chars).
+                <li><code>PropertyID</code>: UUID string (36 chars) or ASCII text (max 14 chars).
                     Examples: "550e8400-e29b-41d4-a716-446655440000" or "prop_1"
                 </li>
-                <li><code>Segment</code>: Segment is a name or id. It is like internal sharding key and is the
-                    most important decision point on performance. This can be a region, city or any block you decide to
-                    group properties. Segment is a required field in search queries.</li>
-                <li><code>Area</code>: Area (e.g., "New York"). Might be a name or id for futher sectioning the data
-                    for finer or faster search.</li>
+                <li><code>Segment</code>: Primary grouping key for data partitioning and sharding.
+                    Choose segments that evenly distribute your properties (e.g., geographic regions,
+                    business units, or logical groups). This is a required field in search queries
+                    and critically impacts performance.
+                </li>
+                <li><code>Area</code>: Secondary grouping for finer data organization within a segment.
+                    Use areas to further categorize properties (e.g., neighborhoods, districts,
+                    or property types) for more targeted searches.
+                </li>
                 <li><code>PropertyType</code>: Type (e.g., "hotel").</li>
                 <li><code>Category</code>: Category (e.g., "test").</li>
                 <li><code>Stars</code>: Star rating (e.g., 4).</li>
